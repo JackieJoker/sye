@@ -43,6 +43,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '807269076699',
     projectId: 'split-your-expenses',
     authDomain: 'split-your-expenses.firebaseapp.com',
+    databaseURL: 'https://split-your-expenses-default-rtdb.europe-west1.firebasedatabase.app/',
     storageBucket: 'split-your-expenses.appspot.com',
     measurementId: 'G-VS0GCG688C',
   );
@@ -52,6 +53,7 @@ class DefaultFirebaseOptions {
     appId: '1:807269076699:android:19c8e25c33ae5c71ab46fe',
     messagingSenderId: '807269076699',
     projectId: 'split-your-expenses',
+    databaseURL: 'https://split-your-expenses-default-rtdb.europe-west1.firebasedatabase.app/',
     storageBucket: 'split-your-expenses.appspot.com',
   );
 
@@ -60,6 +62,7 @@ class DefaultFirebaseOptions {
     appId: '1:807269076699:ios:03d88a8c3f1d7850ab46fe',
     messagingSenderId: '807269076699',
     projectId: 'split-your-expenses',
+    databaseURL: 'https://split-your-expenses-default-rtdb.europe-west1.firebasedatabase.app/',
     storageBucket: 'split-your-expenses.appspot.com',
     iosClientId: '807269076699-o4u53b9evhl1eveie966fjs8lfd8oeo1.apps.googleusercontent.com',
     iosBundleId: 'it.polimi.dima.sye',
