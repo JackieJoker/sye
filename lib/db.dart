@@ -11,8 +11,8 @@ abstract class DB{
     return _groups.child(groupId + "/expenses");
   }
 
-  static getGroupsByUser(String userId, cb) {
-
+  static DatabaseReference getGroups() {
+    return _groups;
   }
   //we need to perform a join fo each tricount to retrieve all the group data, e.g. expenses,name, partecipants etc..
 }
