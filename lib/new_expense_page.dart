@@ -18,8 +18,20 @@ class NewExpensePage extends StatelessWidget {
     final form = _model.form;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("New expense"),
-        actions: <Widget>[
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+          TextButton(
+            child: const Text(
+              "Cancel",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+          const Text("New expense"),
           TextButton(
               child: const Text(
                 "Save",
@@ -35,7 +47,7 @@ class NewExpensePage extends StatelessWidget {
                   form.markAllAsTouched();
                 }
               })
-        ],
+        ]),
       ),
       body: ExpenseForm(groupId: _groupId, model: _model),
     );
