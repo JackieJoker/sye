@@ -11,4 +11,20 @@ class User{
       _surname = surname,
         _email = email,
       _iban = iban;
+
+  String getId() {
+    return _id;
+  }
+  String getName() {
+    return _name;
+  }
+  String getSurname() {
+    return _surname;
+  }
+  String getEmail() {
+    return _email;
+  }
+  String getIban() {
+    return _iban;
+  }
 }
