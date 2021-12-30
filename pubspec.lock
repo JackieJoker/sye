@@ -7,7 +7,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.8.2"
+    version: "2.8.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -21,7 +21,7 @@ packages:
       name: characters
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.1.0"
   charcode:
     dependency: transitive
     description:
@@ -81,9 +81,11 @@ packages:
   currency_picker:
     dependency: "direct main"
     description:
-      name: currency_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: patch-1
+      resolved-ref: b8c4c8754e5dc98550573967da5799e034da162e
+      url: "https://github.com/JackieJoker/flutter_currency_picker.git"
+    source: git
     version: "2.0.6"
   desktop_webview_auth:
     dependency: transitive
@@ -363,7 +365,7 @@ packages:
       name: matcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.11"
+    version: "0.12.10"
   meta:
     dependency: transitive
     description:
@@ -487,7 +489,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.3"
+    version: "0.4.2"
   twitter_login:
     dependency: transitive
     description:
@@ -508,7 +510,7 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.0"
   win32:
     dependency: transitive
     description:

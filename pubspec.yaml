@@ -42,7 +42,11 @@ dependencies:
   device_info_plus: ^3.2.0
   firebase_auth: ^3.3.4
   http: ^0.13.4
-  currency_picker: ^2.0.6
+  # currency_picker: ^2.0.6 TODO: Previous of the fix
+  currency_picker:
+    git:
+      url: https://github.com/JackieJoker/flutter_currency_picker.git
+      ref: patch-1
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:sye/Currency/currency_formatter.dart';
 import 'package:sye/Currency/real_time_currency.dart';
 import 'package:intl/intl.dart';
 
@@ -13,9 +14,9 @@ class CurrencyRow extends StatefulWidget {
   const CurrencyRow(
       {required String currency,
       required AbstractControl<String> amount,
-        required FormGroup form,
-        required String groupCurrency,
-        Key? key})
+      required FormGroup form,
+      required String groupCurrency,
+      Key? key})
       : _currency = currency,
         _groupCurrency = groupCurrency,
         _amount = amount,
@@ -45,45 +46,54 @@ class _CurrencyRowState extends State<CurrencyRow> {
             builder: (BuildContext context,
                 AsyncSnapshot<RealTimeCurrency> snapshot) {
               if (snapshot.hasData) {
-                num realTimeCurrency = snapshot.data!.data[currency];
-                num value = double.parse((1 / realTimeCurrency).toStringAsFixed(5));
-                return Row(
-                  children: [
-                    Flexible(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          labelText:
-                              'Exchange rate (1 ' + currency + ' in ' + widget._groupCurrency + ')',
+                num realTimeCurrency = 1;
+                if (snapshot.data!.data.containsKey(currency)) {
+                  realTimeCurrency = snapshot.data!.data[currency];
+                  num value =
+                      double.parse((1 / realTimeCurrency).toStringAsFixed(5));
+                  return Row(
+                    children: [
+                      Flexible(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: 'Exchange rate (1 ' +
+                                currency +
+                                ' in ' +
+                                widget._groupCurrency +
+                                ')',
+                          ),
+                          readOnly: true,
+                          controller:
+                              TextEditingController(text: value.toString()),
                         ),
-                        readOnly: true,
-                        controller:
-                            TextEditingController(text: value.toString()),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: widget._amount.invalid
-                          ? const SizedBox.shrink()
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                const Text(
-                                  'Converted Value',
-                                  style: TextStyle(
-                                    color: Color(0xFF666666),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: widget._amount.invalid
+                            ? const SizedBox.shrink()
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  const Text(
+                                    'Converted Value',
+                                    style: TextStyle(
+                                      color: Color(0xFF666666),
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  formatAndUpdateForm(value * double.parse(widget._amount.value!)),
-                                  style: const TextStyle(
-                                    fontSize: 20,
+                                  Text(
+                                    formatAndUpdateForm(value *
+                                        double.parse(widget._amount.value!)),
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                    ),
-                  ],
-                );
+                                ],
+                              ),
+                      ),
+                    ],
+                  );
+                }
+                return const SizedBox.shrink();
               } else if (snapshot.hasError) {
                 return const Text("Error");
               }
@@ -93,13 +103,7 @@ class _CurrencyRowState extends State<CurrencyRow> {
   }
 
   String formatAndUpdateForm(double number) {
-    number = double.parse(number.toStringAsFixed(2));
     widget._form.findControl('converted_amount')!.value = number;
-    //TODO: add the € symbol
-    NumberFormat formatter = NumberFormat();
-    formatter.minimumFractionDigits = 0;
-    formatter.maximumFractionDigits = 2;
-    formatter.turnOffGrouping();
-    return formatter.format(number);
+    return CurrencyFormatter.format(number, widget._groupCurrency);
   }
 }

@@ -3,6 +3,7 @@ class Expense {
   final String emoji;
   final String payer;
   final num amount;
+  final num? convertedAmount;
   final String date;
   final String category;
   final String currency;
@@ -14,6 +15,7 @@ class Expense {
     required this.emoji,
     required this.payer,
     required this.amount,
+    this.convertedAmount,
     required this.date,
     required this.category,
     required this.currency,
@@ -21,7 +23,9 @@ class Expense {
     required this.users,
   });
 
-  double amountPerUser(){
-    return amount / users.length;
+  double amountPerUser() {
+    return convertedAmount == null
+        ? amount / users.length
+        : convertedAmount! / users.length;
   }
 }

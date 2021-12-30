@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterfire_ui/database.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:intl/intl.dart';
 import 'package:sye/Currency/currency_row.dart';
 import 'package:sye/Expenses/expense_users_form.dart';
 import '../Db/db.dart';
@@ -105,9 +104,6 @@ class ExpenseForm extends StatelessWidget {
                     readOnly: true,
                     onTap: picker.showPicker,
                     formControlName: 'date',
-                    valueAccessor: DateTimeValueAccessor(
-                      dateTimeFormat: DateFormat('dd/MM/yyyy'),
-                    ),
                     decoration: const InputDecoration(
                       labelText: 'Date',
                       suffixIcon: Icon(Icons.calendar_today),

@@ -1,13 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sye/Currency/currency_formatter.dart';
+import 'package:sye/Groups/group.dart';
 import 'expense.dart';
 import 'expense_detail_page.dart';
 
 class ExpenseElement extends StatelessWidget {
   final Expense _expense;
+  final Group _group;
 
-  const ExpenseElement({required Expense expense, Key? key})
+  const ExpenseElement(
+      {required Expense expense, required Group group, Key? key})
       : _expense = expense,
+        _group = group,
         super(key: key);
 
   @override
@@ -18,6 +23,7 @@ class ExpenseElement extends StatelessWidget {
           MaterialPageRoute(
               builder: (BuildContext context) => ExpenseDetailPage(
                     expense: _expense,
+                    group: _group,
                   ))),
       child: Padding(
         padding: const EdgeInsets.all(5),
@@ -61,7 +67,12 @@ class ExpenseElement extends StatelessWidget {
             Column(
               children: [
                 Text(
-                  _expense.amount.toString() + " €",
+                  _expense.currency == _group.getCurrency()
+                      ? CurrencyFormatter.format(
+                          _expense.amount.toDouble(), _group.getCurrency())
+                      : CurrencyFormatter.format(
+                          _expense.convertedAmount!.toDouble(),
+                          _group.getCurrency()),
                   style: const TextStyle(
                     fontSize: 20,
                     color: Colors.blue,

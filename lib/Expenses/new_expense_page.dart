@@ -64,9 +64,11 @@ class NewExpensePage extends StatelessWidget {
       if (usersBool[i]!) selectedUsers[DB.userKeys[i]] = DB.users[i];
     }
     Map? edited = Map.of(form.value);
+    DateTime date = edited['date'];
     edited.update('users', (value) => selectedUsers) as Map?;
-    edited.update('date', (value) => DateFormat('dd/MM/yyyy').format(value));
+    edited.update('date', (value) => DateFormat('yyyy/MM/dd').format(value));
     edited.update('amount', (value) => double.parse(value));
+    edited.addAll({'order' : - date.millisecondsSinceEpoch});
     DB.addExpense(_groupId, edited);
     form.reset();
   }
