@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:sye/real_time_currency.dart';
+import 'package:sye/Currency/real_time_currency.dart';
 import 'package:intl/intl.dart';
 
 class CurrencyRow extends StatefulWidget {

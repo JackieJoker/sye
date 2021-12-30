@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sye/group_form.dart';
+import 'package:sye/Groups/group_form.dart';
 
-import 'db.dart';
+import '../Db/db.dart';
 import 'group_form_model.dart';
 
 class NewGroupPage extends StatelessWidget {

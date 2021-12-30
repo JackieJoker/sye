@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutterfire_ui/database.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:intl/intl.dart';
-import 'package:sye/currency_row.dart';
-import 'package:sye/expense_users_form.dart';
-import 'db.dart';
+import 'package:sye/Currency/currency_row.dart';
+import 'package:sye/Expenses/expense_users_form.dart';
+import '../Db/db.dart';
 import 'expense_form_model.dart';
 import 'package:currency_picker/currency_picker.dart';
 

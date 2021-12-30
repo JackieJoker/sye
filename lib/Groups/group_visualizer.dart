@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sye/group.dart';
+import 'package:sye/Groups/group.dart';
 
 class GroupVisualizer extends StatelessWidget {
   /*final String _name;
