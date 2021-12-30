@@ -8,7 +8,11 @@ class ExpensesPage extends StatelessWidget {
   final String _groupCurrency;
   final Group _group;
 
-  const ExpensesPage({required String groupId, required String groupCurrency, required Group group, Key? key})
+  const ExpensesPage(
+      {required String groupId,
+      required String groupCurrency,
+      required Group group,
+      Key? key})
       : _groupId = groupId,
         _groupCurrency = groupCurrency,
         _group = group,
@@ -17,20 +21,22 @@ class ExpensesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Split Your Expenses"),
-      ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => NewExpensePage(groupId: _groupId, groupCurrency: _groupCurrency,)));
-          },
-          tooltip: "Add a new expense",
-          child: const Icon(Icons.add)),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: ExpensesList(groupId: _groupId, group: _group)
-    );
+        appBar: AppBar(
+          title: const Text("Split Your Expenses"),
+        ),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NewExpensePage(
+                            groupId: _groupId,
+                            groupCurrency: _groupCurrency,
+                          )));
+            },
+            tooltip: "Add a new expense",
+            child: const Icon(Icons.add)),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        body: ExpensesList(groupId: _groupId, group: _group));
   }
 }

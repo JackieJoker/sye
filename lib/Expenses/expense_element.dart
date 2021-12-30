@@ -26,7 +26,7 @@ class ExpenseElement extends StatelessWidget {
                     group: _group,
                   ))),
       child: Padding(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 20),
         child: Row(
           children: [
             Flexible(
