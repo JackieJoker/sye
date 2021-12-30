@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sye/Expenses/expense_form.dart';
+import 'package:sye/expense_form.dart';
 
-import '../Db/db.dart';
+import 'db.dart';
 import 'expense_form_model.dart';
 
 class NewExpensePage extends StatelessWidget {

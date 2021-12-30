@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/database.dart';
-import 'package:sye/Classes/swipeable_item.dart';
-import '../Db/db.dart';
+import 'package:sye/swipeable_item.dart';
+import 'db.dart';
 import 'expense.dart';
 
 class ExpensesList extends StatelessWidget {

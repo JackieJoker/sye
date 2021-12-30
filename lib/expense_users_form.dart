@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../Db/db.dart';
+import 'db.dart';
 
 class ExpenseUsersForm extends StatefulWidget {
   final String _groupId;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sye/Expenses/expenses_page.dart';
-import 'package:sye/Groups/groups_list.dart';
-import 'package:sye/Groups/new_group_page.dart';
+import 'package:sye/expenses_page.dart';
+import 'package:sye/groups_list.dart';
+import 'package:sye/new_group_page.dart';
 
 class TestHomePage extends StatelessWidget {
   const TestHomePage({Key? key}) : super(key: key);

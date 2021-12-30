@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutterfire_ui/database.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:intl/intl.dart';
-import 'package:sye/Expenses/expense_users_form.dart';
-import '../Db/db.dart';
+import 'package:sye/expense_users_form.dart';
+import 'db.dart';
 import 'expense_form_model.dart';
 
 class ExpenseForm extends StatelessWidget {

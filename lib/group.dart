@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
-import 'package:sye/Expenses/expense.dart';
-import 'package:sye/Classes/user.dart';
+import 'package:sye/expense.dart';
+import 'package:sye/user.dart';
 
 class Group {
   final String _name;
