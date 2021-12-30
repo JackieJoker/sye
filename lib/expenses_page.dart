@@ -4,9 +4,11 @@ import 'new_expense_page.dart';
 
 class ExpensesPage extends StatelessWidget {
   final String _groupId;
+  final String _groupCurrency;
 
-  const ExpensesPage({required String groupId, Key? key})
+  const ExpensesPage({required String groupId, required String groupCurrency, Key? key})
       : _groupId = groupId,
+        _groupCurrency = groupCurrency,
         super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class ExpensesPage extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => NewExpensePage(groupId: _groupId)));
+                    builder: (context) => NewExpensePage(groupId: _groupId, groupCurrency: _groupCurrency,)));
           },
           tooltip: "Add a new expense",
           child: const Icon(Icons.add)),

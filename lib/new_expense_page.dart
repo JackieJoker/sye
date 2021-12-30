@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:sye/expense_form.dart';
-
+import 'package:intl/intl.dart';
 import 'db.dart';
 import 'expense_form_model.dart';
 
 class NewExpensePage extends StatelessWidget {
   final String _groupId;
+  final String _groupCurrency;
 
-  final ExpenseFormModel _model = ExpenseFormModel();
+  final ExpenseFormModel _model;
 
-  NewExpensePage({required String groupId, Key? key})
+  NewExpensePage({required String groupId, required String groupCurrency, Key? key})
       : _groupId = groupId,
+        _groupCurrency = groupCurrency,
+        _model = ExpenseFormModel(groupCurrency: groupCurrency),
         super(key: key);
 
   @override
@@ -49,7 +52,7 @@ class NewExpensePage extends StatelessWidget {
               })
         ]),
       ),
-      body: ExpenseForm(groupId: _groupId, model: _model),
+      body: ExpenseForm(groupId: _groupId, model: _model, groupCurrency: _groupCurrency,),
     );
   }
 
@@ -62,7 +65,7 @@ class NewExpensePage extends StatelessWidget {
     }
     Map? edited = Map.of(form.value);
     edited.update('users', (value) => selectedUsers) as Map?;
-    edited.update('date', (value) => value.toString());
+    edited.update('date', (value) => DateFormat('dd/MM/yyyy').format(value));
     edited.update('amount', (value) => double.parse(value));
     DB.addExpense(_groupId, edited);
     form.reset();

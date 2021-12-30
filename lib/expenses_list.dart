@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/database.dart';
 import 'package:sye/swipeable_item.dart';
 import 'db.dart';
 import 'expense.dart';
+import 'expense_element.dart';
 
 class ExpensesList extends StatelessWidget {
   final String _groupId;
@@ -19,13 +18,22 @@ class ExpensesList extends StatelessWidget {
       query: DB.getExpensesList(_groupId),
       itemBuilder: (context, snapshot) {
         var expense = snapshot.value as Map;
-        log(expense.toString());
         return SwipeableItem(
-          item: Expense(
-            title: expense["title"],
-            payer: expense["payer"],
-            amount: expense["amount"],
-            date: expense["date"],
+          item: ExpenseElement(
+            expense: Expense(
+              title: expense["title"],
+              emoji: '💙',
+              payer: expense["payer"],
+              amount: expense["amount"],
+              date: expense["date"],
+              currency: expense['currency'],
+              //TODO
+              //type: expense['type'],
+              //category: expense['category'],
+              type: 'type',//
+              category: 'category',//
+              users: (expense['users'] as Map).values.toList(),
+            ),
           ),
           onDelete: _delete(snapshot.key!),
         );

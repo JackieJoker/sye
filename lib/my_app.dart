@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sye/test_home_page.dart';
 import 'home_page.dart';
 
 class MyApp extends StatelessWidget {
@@ -12,7 +11,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const TestHomePage(),
+      home: const HomePage(),
     );
   }
 }
