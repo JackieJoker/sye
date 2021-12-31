@@ -7,11 +7,13 @@ import 'expense_detail_page.dart';
 
 class ExpenseElement extends StatelessWidget {
   final Expense _expense;
+  final String _groupId;
   final Group _group;
 
   const ExpenseElement(
-      {required Expense expense, required Group group, Key? key})
+      {required String groupId, required Expense expense, required Group group, Key? key})
       : _expense = expense,
+        _groupId = groupId,
         _group = group,
         super(key: key);
 
@@ -22,8 +24,9 @@ class ExpenseElement extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => ExpenseDetailPage(
-                    expense: _expense,
+                    expenseId: _expense.expenseId,
                     group: _group,
+                    groupId: _groupId,
                   ))),
       child: Padding(
         padding: const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 20),

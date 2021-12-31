@@ -15,6 +15,9 @@ abstract class DB {
   static DatabaseReference getUsersList(String groupId) =>
       _groups.child(groupId + '/participants');
 
+  static DatabaseReference getExpense(String groupId, String expenseId) =>
+      _groups.child(groupId + "/expenses/" + expenseId);
+
   static Future<void> updateUsers(String groupId) async {
     DatabaseEvent event =
     await
@@ -32,6 +35,11 @@ abstract class DB {
     DatabaseReference expensesDB = _groups.child(groupId + '/expenses');
     DatabaseReference newExpenseDB = expensesDB.push();
     newExpenseDB.set(expense);
+  }
+
+  static void editExpense(String groupId, String expenseId, Map expense){
+    DatabaseReference expensesDB = _groups.child(groupId + "/expenses/" + expenseId);
+    expensesDB.set(expense);
   }
 
   static DatabaseReference getGroups() {

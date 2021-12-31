@@ -26,9 +26,11 @@ class _ExpenseUsersFormState extends State<ExpenseUsersForm> {
     if(DB.users.isEmpty) {
       await DB.updateUsers(widget._groupId);
     }
-    usersList.addAll(
-        DB.users.map((e) => FormControl<bool>(value: true)).toList()
-    );
+    if(usersList.value!.isEmpty) {
+      usersList.addAll(
+          DB.users.map((e) => FormControl<bool>(value: true)).toList()
+      );
+    }
   }
 
   @override

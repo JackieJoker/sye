@@ -26,6 +26,7 @@ class ExpensesList extends StatelessWidget {
         return SwipeableItem(
           item: ExpenseElement(
             expense: Expense(
+              expenseId: snapshot.key!,
               title: expense["title"],
               emoji: '💙',
               //payer: expense["payer"], // mi da problemi con il modo in cui tu inserisci il payer, ho optato per questa soluzione al momento
@@ -44,6 +45,7 @@ class ExpensesList extends StatelessWidget {
               users: (expense['users'] as Map).values.toList(),
             ),
             group: _group,
+            groupId: _groupId,
           ),
           onDelete: _delete(snapshot.key!),
         );

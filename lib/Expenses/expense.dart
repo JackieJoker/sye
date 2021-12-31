@@ -1,4 +1,5 @@
 class Expense {
+  final String expenseId;
   final String title;
   final String emoji;
   final String payer;
@@ -11,6 +12,7 @@ class Expense {
   final List<Object?> users;
 
   const Expense({
+    required this.expenseId,
     required this.title,
     required this.emoji,
     required this.payer,
