@@ -27,4 +27,12 @@ class User{
   String getIban() {
     return _iban;
   }
+  Map<String, dynamic> toMap() {
+    return {
+      'name' : _name,
+      'surname' : _surname,
+      'email' : _email,
+      'iban' : _iban,
+    };
+  }
 }

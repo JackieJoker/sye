@@ -11,5 +11,11 @@ class Category {
   }
   String getIcon() {
     return _icon;
-}
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'name' : _name,
+      'icon' : _icon,
+    };
+  }
 }

@@ -19,11 +19,10 @@ class GroupsList extends StatelessWidget {
         query: DB.getGroups(),
         itemBuilder: (context, snapshot) {
           var group = snapshot.value as Map;
-          log(group.toString());
           return /*Text(group["name"]);*/
             SwipeableItem(
-              item: GroupVisualizer(route: group),
-              onDelete: _delete(group["name"]),
+              item: GroupVisualizer(route: group, k: snapshot.key!),
+              onDelete: _delete(snapshot.key!),
           );
         },
         );

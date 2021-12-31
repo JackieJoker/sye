@@ -1,27 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:sye/Expenses/expenses_page.dart';
 import 'package:sye/Groups/group.dart';
 
 class GroupVisualizer extends StatelessWidget {
-  /*final String _name;
-  final String _currency;
-  final String _description;*/
   final Map routeData;
+  final String groupKey;
 
-  /*const GroupVisualizer({required nam,required curren, desc, Key? key}) : _name = nam,
-        _currency = curren,
-        _description = desc,
-        super(key:key);*/
-  const GroupVisualizer({required route, Key? key}): routeData=route,super(key:key);
+  const GroupVisualizer({required route,required k, Key? key}): routeData=route,groupKey=k,super(key:key);
 
   @override
   Widget build(BuildContext context) {
     Group g = Group(
+        id: groupKey,
         name: routeData["name"],
         currency: routeData["currency"],
         description: routeData["description"],
-
+        users: routeData["participants"],
+        expenses: routeData['expenses'],
+        category: routeData['category'],
+        creator: routeData['creator'],
     );
     return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ExpensesPage(groupId: groupKey, groupCurrency: g.getCurrency(), group: g,)));
+      },
       child: Padding(
         padding: const EdgeInsets.all(5),
         child: Container(
@@ -29,17 +34,20 @@ class GroupVisualizer extends StatelessWidget {
             Row(
               children: [
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       g.getName(),
                       style: const TextStyle(
-                        fontSize: 30,
+                        fontSize: 25,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     if (g.getDescription().toString().isNotEmpty)
                       Text(g.getDescription().toString(),
                         style: const TextStyle(
                           fontSize: 15,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       )
                     else

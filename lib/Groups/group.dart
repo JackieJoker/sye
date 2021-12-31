@@ -1,6 +1,7 @@
 class Group {
+  final String _id;
   final String _name;
-  final String? _description;
+  final String _description;
   final String? _creator;
   final String _currency;
   final String? _category;
@@ -8,13 +9,15 @@ class Group {
   final Map? _users;
 
   const Group({
+    required id,
     required name,
-    description,
+    required description,
     creator,
     required currency,
     category,
     expenses,
     users,}) :
+      _id = id,
       _name = name,
       _description = description,
       _creator = creator,
@@ -24,7 +27,7 @@ class Group {
       _users = users;
 
 
-  String? getDescription() {
+  String getDescription() {
     return _description;
   }
   String? getCreator() {
@@ -42,7 +45,19 @@ class Group {
   Map? getUsers() {
     return _users;
   }
-
-  String getName() { return _name;}
+  String getName() {
+    return _name;
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'name' : _name,
+      'description' : _description,
+      'creator' : _creator,
+      'currency' : _currency,
+      'category' : _category,
+      'expenses' : _expenses,
+      'users' : _users,
+    };
+  }
 
 }

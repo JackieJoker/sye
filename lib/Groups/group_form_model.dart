@@ -9,9 +9,10 @@ class GroupFormModel{
 
   final FormGroup form = fb.group({
     'name': ['', Validators.required],
-    'currency': 'eur',
+    'description' : '',
+    'currency': 'EUR',
     'category' : Category,
     'email' : ['', Validators.email],
-    'users': FormArray<bool>([]),
+    'users': FormArray,
   });
 }

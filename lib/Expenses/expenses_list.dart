@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/database.dart';
 import 'package:sye/Classes/swipeable_item.dart';
@@ -26,6 +28,7 @@ class ExpensesList extends StatelessWidget {
             expense: Expense(
               title: expense["title"],
               emoji: '💙',
+              //payer: expense["payer"], // mi da problemi con il modo in cui tu inserisci il payer, ho optato per questa soluzione al momento
               payer: _group.getUsers()![expense['payer']],
               amount: expense["amount"],
               convertedAmount: expense['converted_amount'],
