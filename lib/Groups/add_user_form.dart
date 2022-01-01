@@ -1,109 +1,148 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:sye/Groups/user_label.dart';
 
-/*class AddUserForm extends StatefulWidget {
-  final FormGroup form;
-
-  const AddUserForm({required f,Key? key}) : form = f, super(key: key);
-
-  @override
-  AddUserFormState createState() => AddUserFormState();
-}
-
-class AddUserFormState extends State<AddUserForm> {
-  FormArray get usersList => widget.form.control('users') as FormArray;
-
-  @override
-  void initState() {
-
-  }
-
-  void addUser(String us) {
-    usersList.add();
-  }
-
-}*/
-
-class AddUserForm extends StatelessWidget {
-
+class AddUserForm extends StatefulWidget {
   const AddUserForm({Key? key}) : super(key: key);
 
   @override
+  _AddUserFormState createState() => _AddUserFormState();
+}
+
+class _AddUserFormState extends State<AddUserForm> {
+  List<String> usersList = [];
+  String? tempUser;
+  final TextEditingController eCtrl = TextEditingController();
+  final TextEditingController eCtrl1 = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return SafeArea(
-        child:
-        Container(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Container(
-                  child: const Text(
-                    'Who Participates? (0/50)',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
+      child:
+      Container(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Container(
+                child: Text(
+                  'Who Participates? ('+ usersList.length.toString() + '/50)',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                alignment: Alignment.centerLeft,
+                height: 60,
+                color: Colors.blueGrey,
+                padding: const EdgeInsets.only(left:3),
+              ),
+            ),
+            ListView.builder(
+                shrinkWrap: true,
+                itemCount: usersList.length,
+                itemBuilder: (BuildContext ctxt, int index) {
+                  //return Text(usersList[index]);
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 10),
+                    child: Container(
+                      decoration: const BoxDecoration(shape: BoxShape.rectangle),
+                      constraints: const BoxConstraints(maxWidth: 500, maxHeight: 40),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              onSubmitted: (text) {
+                                if (text.isNotEmpty){
+                                  usersList[index] = text;
+                                  eCtrl.clear();
+                                  setState(() {});
+                                }
+                              },
+                              controller: eCtrl1,
+                              decoration: InputDecoration(
+                                  hintText: usersList[index],
+                                  border: InputBorder.none,
+                                  suffixIcon: GestureDetector(
+                                    onTap: () {
+                                      if (index != 0) {
+                                        usersList.removeAt(index);
+                                        setState(() {});
+                                      }
+                                    },
+                                    child: const Icon(Icons.clear),
+                                  )
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    flex: 4,
+                    child: TextField(
+                      onChanged: (text) {
+                        tempUser = text;
+                      },
+                      controller: eCtrl,
+                      onSubmitted: (text) {
+                        if (text.isNotEmpty){
+                          usersList.add(text);
+                          eCtrl.clear();
+                          setState(() {});
+                        }
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Participant\'s name',
+                      ),
                     ),
                   ),
-                  alignment: Alignment.centerLeft,
-                  height: 60,
-                  color: Colors.blueGrey,
-                  padding: const EdgeInsets.only(left:3),
-                ),
+                  Flexible(
+                    fit: FlexFit.tight,
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (tempUser!.isNotEmpty) {
+                          usersList.add(tempUser!);
+                          tempUser = null;
+                          setState(() {});
+                        }
+                      },
+                      child: Container(
+                        constraints: const BoxConstraints(
+                          maxWidth: 80,
+                          maxHeight: 35,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          color: Colors.blueAccent,
+                          shape: BoxShape.rectangle,
+                        ),
+                        child: const Center(
+                          child: Text("Add"),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              /*Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: ListView(),
-              ),*/
-              /*FutureBuilder(
-                future: ,
-                builder: (context, snapshot) {
-                  return ListView.builder(itemBuilder: null),
-                },
-              ),*/
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Flexible(
-                      fit: FlexFit.tight,
-                      flex: 4,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Participant\'s name',
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      fit: FlexFit.tight,
-                      flex: 1,
-                      child: GestureDetector(
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            maxWidth: 80,
-                            maxHeight: 35,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: Colors.blueAccent,
-                            shape: BoxShape.rectangle,
-                          ),
-                          child: const Center(
-                              child: Text("Add"),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
+      ),
     );
   }
 }
+
+
+
 

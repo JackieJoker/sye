@@ -34,11 +34,12 @@ class GroupForm extends StatelessWidget {
                       ),
                     ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 10, right: 10),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
                   child:
-                    TextField(
-                      decoration: InputDecoration(
+                    ReactiveTextField(
+                      formControlName: 'description',
+                      decoration: const InputDecoration(
                         labelText: 'Description',
                       ),
                     ),
@@ -92,7 +93,40 @@ class GroupForm extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                           ),
                         ),
-                        const CategoryWidget(),
+                        //const CategoryWidget(),
+                        ReactiveDropdownField<String>(
+                          formControlName: 'category',
+                          hint: const DropdownMenuItem(
+                            value: 'others',
+                            child: Text('👉 Others'),
+                          ),
+                          items: const [
+                          DropdownMenuItem(
+                            value: 'travel',
+                            child: Text('🌍 Travel'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'sharedHouse',
+                            child: Text('🏠 Shared house'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'couple',
+                            child: Text('😍 Couple'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'event',
+                            child: Text('🎤 Event'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'project',
+                            child: Text('🛠 Project'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'others',
+                            child: Text('👉 Others'),
+                          ),
+
+                        ],),
                       ],
                     ),
                 ),
