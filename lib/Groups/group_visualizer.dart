@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:sye/Expenses/expenses_page.dart';
 import 'package:sye/Groups/group.dart';
@@ -10,6 +12,7 @@ class GroupVisualizer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     Group g = Group(
         id: groupKey,
         name: routeData["name"],

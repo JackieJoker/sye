@@ -22,7 +22,20 @@ class ExpensesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Split Your Expenses"),
+            automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                child: const Icon(Icons.arrow_back_ios_outlined),
+                onTap: () => Navigator.pop(context),
+              ),
+              GestureDetector(
+                child: Text(_group.getName()),
+              ),
+              const Icon(Icons.menu)
+            ],
+          )
         ),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
