@@ -48,6 +48,9 @@ class Group {
   String getName() {
     return _name;
   }
+  String getId() {
+    return _id;
+  }
   Map<String, dynamic> toMap() {
     return {
       'name' : _name,

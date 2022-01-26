@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sye/Expenses/expenses_page.dart';
 import 'package:sye/Groups/groups_list.dart';
 import 'package:sye/Groups/new_group_form_page.dart';
+import 'package:sye/login.dart';
 
 class GroupPage extends StatelessWidget {
   const GroupPage({Key? key}) : super(key: key);
@@ -10,8 +11,18 @@ class GroupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text("Split Your Expenses")
+          automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Center(
+              child: Text("Split Your Expenses")
+            ),
+            GestureDetector(
+                onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));},
+                child: Icon(Icons.menu)
+            )
+          ],
         )
       ),
       floatingActionButton: FloatingActionButton(

@@ -4,7 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:sye/get_device_id.dart';
 
 abstract class DB {
-  static var _groups;
+  static var _groups; //TODO: handle the error on this variable
   static final DatabaseReference _users = FirebaseDatabase.instance.ref("users");
   static final DatabaseReference _groupUsers = FirebaseDatabase.instance.ref("groups_users");
   static final DatabaseReference _userGroups = FirebaseDatabase.instance.ref("users_groups");
@@ -56,8 +56,10 @@ abstract class DB {
     newGroupDB.set(group);
   }
 
-  static void editExpense(String groupId, String expenseId, Map expense){
-    DatabaseReference expensesDB = _groups.child(groupId + "/expenses/" + expenseId);
+  static Future<void> editExpense(String groupId, String expenseId, Map expense) async {
+    String userId = await DeviceId.getDeviceDetails();
+    DatabaseReference groups = FirebaseDatabase.instance.ref(userId + '/groups');
+    DatabaseReference expensesDB = groups.child(groupId + "/expenses/" + expenseId);
     expensesDB.set(expense);
   }
 
@@ -65,6 +67,7 @@ abstract class DB {
     String userId = await DeviceId.getDeviceDetails();
     DatabaseReference groups = FirebaseDatabase.instance.ref(userId + '/groups');
     DatabaseEvent g = await groups.once();
+    //setGroup(groups);
     if (g.snapshot.exists) {
       setGroup(groups);
     } else {
@@ -74,6 +77,18 @@ abstract class DB {
   }
 
   static DatabaseReference getGroup() => _groups;
+
   static void setGroup(DatabaseReference x) { _groups = x; }
+
+  static Future<void> deleteGroup(String x) async {
+    String userId = await DeviceId.getDeviceDetails();
+    DatabaseReference ref = FirebaseDatabase.instance.ref(userId + '/' + 'groups' + '/' + x);
+    await ref.remove();
+  }
+  static Future<void> editGroup(String x, Map<String,Object?> m) async {
+    String userId = await DeviceId.getDeviceDetails();
+    DatabaseReference ref = FirebaseDatabase.instance.ref(userId + '/' + 'groups' + '/' + x);
+    await ref.update(m); //
+  }
   //we need to perform a join fo each group to retrieve all the group data, e.g. expenses,name, partecipants etc..
 }

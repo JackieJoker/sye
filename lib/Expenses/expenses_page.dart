@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sye/Groups/edit_group_page.dart';
 import 'package:sye/Groups/group.dart';
 import 'expenses_list.dart';
 import 'new_expense_page.dart';
@@ -20,6 +21,7 @@ class ExpensesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> uList = castMapUsersToList(_group.getUsers()!);
     return Scaffold(
         appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -30,8 +32,33 @@ class ExpensesPage extends StatelessWidget {
                 child: const Icon(Icons.arrow_back_ios_outlined),
                 onTap: () => Navigator.pop(context),
               ),
-              GestureDetector(
-                child: Text(_group.getName()),
+              Column(
+                children: [
+                  GestureDetector(
+                    child: Text(_group.getName()),
+                    onTap: () => Navigator.push(context,
+                        MaterialPageRoute(
+                            builder: (context) => EditGroupPage(group: _group))
+                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(3.0),
+                    child: Wrap(
+                      children: List.generate(uList.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 7),
+                          child: Text(
+                            uList[index],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 13
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  )
+                ],
               ),
               const Icon(Icons.menu)
             ],
@@ -51,5 +78,15 @@ class ExpensesPage extends StatelessWidget {
             child: const Icon(Icons.add)),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: ExpensesList(groupId: _groupId, group: _group));
+  }
+
+  List<dynamic> castMapUsersToList (Map<dynamic,dynamic> m) {
+    int i = 0;
+    List<dynamic> l = [];
+    while (m.containsKey('u' + i.toString())) {
+      l.add(m['u' + i.toString()]);
+      i += 1;
+    }
+    return l;
   }
 }

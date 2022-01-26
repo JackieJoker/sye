@@ -1,67 +1,92 @@
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:currency_picker/currency_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:sye/home_page.dart';
+
+import 'group.dart';
 import '../Db/db.dart';
 
-class NewGroupFormPage extends StatelessWidget {
+class EditGroupPage extends StatelessWidget {
+  final Group _group;
+  EditGroupPage({Key? key, required Group group}) : _group = group, super(key: key);
 
   final _formKey = GlobalKey<FormBuilderState>();
 
-  NewGroupFormPage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    var usersList = [];
+    Map<dynamic,dynamic> usersMap = _group.getUsers()!;
+    List<dynamic> usersList = castMapUsersToList(usersMap);
+    String? tempUser;
     final TextEditingController eCtrl = TextEditingController();
     final TextEditingController eCtrl1 = TextEditingController();
-    String? tempUser;
-    // Build a Form widget using the _formKey created above.
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                child: const Text(
-                  "Cancel",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  fontSize: 14
                 ),
-                onPressed: () => Navigator.pop(context),
               ),
-              const Text("New Group"),
-              TextButton(
-                  child: const Text(
-                    "Save",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: () {
-                    _onSubmit();
-                    Navigator.pop(context);
-                  })
-            ]),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage())),
+            ),
+            const Text('Edit the Group',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                _onSubmit(usersList);
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Save',
+                style: TextStyle(
+                    fontSize: 14
+                ),
+              ),
+            )
+          ],
+        ),
       ),
       body: FormBuilder(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
-            children: <Widget>[
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 10, top: 6),
+                child: Text('Name',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child:
                 FormBuilderTextField(
                   name: 'name',
-                  validator: FormBuilderValidators.required(context),
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
+                  decoration: InputDecoration(
+                    hintText: _group.getName(),
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 10, top: 6),
+                child: Text('Description',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17
                   ),
                 ),
               ),
@@ -70,124 +95,19 @@ class NewGroupFormPage extends StatelessWidget {
                 child:
                 FormBuilderTextField(
                   name: 'description',
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
+                  decoration: InputDecoration(
+                    hintText: _group.getDescription(),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 4),
-                child: SizedBox(
-                  width: 500,
-                  child: FormBuilderTextField(
-                    name: 'currency',
-                    readOnly: true,
-                    decoration: const InputDecoration(
-                      labelText: "Currency",
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    onTap: () {
-                      showCurrencyPicker(
-                        context: context,
-                        showFlag: true,
-                        showCurrencyName: true,
-                        showCurrencyCode: true,
-                        onSelect: (Currency currency) {
-                          _formKey.currentState?.fields['currency']?.didChange(currency.code);
-                        },
-                        favorite: ['USD','EUR'],
-                      );
-                    }, 
-                  )
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text('Specify the currency that will be used to calculate the Group\'s balance. Expenses could be done in other currencies.'),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10, left: 8, right:8),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Container(
-                        child: const Text(
-                          "Category",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        alignment: Alignment.centerLeft,
-                      ),
-                    ),
-                    //const CategoryWidget(),
-                    FormBuilderChoiceChip(
-                        name: 'category',
-                        validator: FormBuilderValidators.required(context),
-                        padding: const EdgeInsets.all(5.0),
-                        spacing: 18.0,
-                        options: const [
-                          FormBuilderFieldOption(
-                            value: 'travel',
-                            child: Text('🌍 Travel'),
-                          ),
-                          FormBuilderFieldOption(
-                            value: 'sharedHouse',
-                            child: Text('🏠 Shared house'),
-                          ),
-                          FormBuilderFieldOption(
-                            value: 'couple',
-                            child: Text('😍 Couple'),
-                          ),
-                          FormBuilderFieldOption(
-                            value: 'event',
-                            child: Text('🎤 Event'),
-                          ),
-                          FormBuilderFieldOption(
-                            value: 'project',
-                            child: Text('🛠 Project'),
-                          ),
-                          FormBuilderFieldOption(
-                            value: 'others',
-                            child: Text('👉 Others'),
-                          ),
-                        ],
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Container(
-                  child: const Text(
-                    'Your Informations',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  alignment: Alignment.centerLeft,
-                  height: 60,
-                  color: Colors.blueGrey,
-                  padding: const EdgeInsets.only(left: 3),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child:
-                FormBuilderTextField(
-                  name: 'email',
-                  validator: FormBuilderValidators.email(context),
-                  decoration: const InputDecoration(
-                    labelText: 'Email(optional)',
+                padding: const EdgeInsets.only(left: 10, top: 20),
+                child: Text('Currency: ' + _group.getCurrency(),
+                  style: const TextStyle(
+                      fontSize: 20
                   ),
                 ),
-              ),
+                ),
               FormBuilderField(
                 name: "participants",
                 builder: (FormFieldState<dynamic> field) {
@@ -226,7 +146,7 @@ class NewGroupFormPage extends StatelessWidget {
                                       onSubmitted: (text) {
                                         if (text.isNotEmpty){
                                           usersList[index] = text;
-                                          _formKey.currentState?.fields['participants']?.didChange(usersList);
+                                          //_formKey.currentState?.fields['participants']?.didChange(usersList);
                                         }
                                       },
                                       controller: eCtrl1,
@@ -237,7 +157,7 @@ class NewGroupFormPage extends StatelessWidget {
                                             onTap: () {
                                               if (index != 0) {
                                                 usersList.removeAt(index);
-                                                _formKey.currentState?.fields['participants']?.didChange(usersList);
+                                                //_formKey.currentState?.fields['participants']?.didChange(usersList);
                                               }
                                             },
                                             child: const Icon(Icons.clear),
@@ -268,7 +188,7 @@ class NewGroupFormPage extends StatelessWidget {
                                   if (text.isNotEmpty){
                                     usersList.add(text);
                                     eCtrl.clear();
-                                    _formKey.currentState?.fields['participants']?.didChange(usersList);
+                                    //_formKey.currentState?.fields['participants']?.didChange(usersList);
                                   }
                                 },
                                 decoration: const InputDecoration(
@@ -283,7 +203,7 @@ class NewGroupFormPage extends StatelessWidget {
                                 onTap: () {
                                   if (tempUser!.isNotEmpty) {
                                     usersList.add(tempUser!);
-                                    _formKey.currentState?.fields['participants']?.didChange(usersList);
+                                    //_formKey.currentState?.fields['participants']?.didChange(usersList);
                                     tempUser = null;
                                   }
                                 },
@@ -310,56 +230,45 @@ class NewGroupFormPage extends StatelessWidget {
                   );
                 },
               ),
-              //AddUserForm(form: form),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Container(
+                  child: GestureDetector(
+                    onTap: () {
+                      DB.deleteGroup(_group.getId());
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => const HomePage()));
+                    },
+                    child: const Text(
+                      'Delete this Group',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.redAccent
+                      ),
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  height: 60,
+                  color: Colors.blueGrey,
+                  padding: const EdgeInsets.only(left:3),
+                ),
+              ),
             ],
-            mainAxisAlignment: MainAxisAlignment.start,
           ),
-
         ),
       ),
     );
   }
-  void _onSubmit() {
 
-    var valid = _formKey.currentState!.validate();
-    if (valid) {
-      _formKey.currentState!.save();
-      Map<String, String> mapUsers = getUserList(_formKey.currentState?.fields['participants']?.value);
-
-      var keys = _formKey.currentState!.fields.keys;
-      Map<String,dynamic> edited = {};
-
-      for (var element in keys) {
-        edited[element] = "";
-      }
-
-      edited.update('name', (value) => _formKey.currentState!.fields['name']!.value);
-      edited.update('currency', (value) => _formKey.currentState?.fields['currency']?.value);
-      edited.update('category', (value) => _formKey.currentState?.fields['category']?.value);
-      edited.update('participants', (value) => mapUsers);
-      if (_formKey.currentState?.fields['email']?.value != null) {
-        edited.update('email', (value) => _formKey.currentState?.fields['email']?.value);
-      } else {
-        edited.remove('email');
-      }
-      if (_formKey.currentState?.fields['description']?.value != null) {
-        edited.update('description', (value) => _formKey.currentState?.fields['description']?.value);
-      } else {
-        edited.remove('description');
-      }
-
-      log(edited.toString());
-      DB.addGroup(edited);
-    } else {
-      _formKey.currentState!.invalidateField(name: 'name');
-      _formKey.currentState!.invalidateField(name: 'currency');
-      _formKey.currentState!.invalidateField(name: 'category', errorText: 'Choose a given category');
-      _formKey.currentState!.invalidateField(name: 'participants');
-      print('Not validated');
+  List<dynamic> castMapUsersToList (Map<dynamic,dynamic> m) {
+    int i = 0;
+    List<dynamic> l = [];
+    while (m.containsKey('u' + i.toString())) {
+      l.add(m['u' + i.toString()]);
+      i += 1;
     }
-
-
-    //log(_formKey.currentState!.fields['title']!.value);
+    return l;
   }
 
   Map<String,String> getUserList(List<dynamic> uList) {
@@ -370,10 +279,43 @@ class NewGroupFormPage extends StatelessWidget {
     }
     return mapUsers;
   }
-}
 
-  /*Future<String?> _getUserId() async {
-    final prefs = await SharedPreferences.getInstance();
-    final value = await prefs.getString('deviceId');
-    return value;
-  }*/
+  void _onSubmit(List<dynamic> l) {
+
+
+    var valid = _formKey.currentState!.validate();
+    if (valid) {
+      _formKey.currentState!.save();
+      Map<String, String> mapUsers = getUserList(l);
+
+      var keys = _formKey.currentState!.fields.keys;
+      Map<String,dynamic> edited = {};
+
+      for (var element in keys) {
+        edited[element] = "";
+      }
+      if (_formKey.currentState!.fields['name']!.value != null) {
+        edited.update(
+            'name', (value) => _formKey.currentState!.fields['name']!.value);
+      } else {
+        edited.remove('descripton');
+      }
+      edited.update('participants', (value) => mapUsers);
+      if (_formKey.currentState?.fields['description']?.value != null) {
+        edited.update('description', (value) => _formKey.currentState?.fields['description']?.value);
+      } else {
+        edited.remove('description');
+      }
+      DB.editGroup(_group.getId(), edited);
+    } else {
+      _formKey.currentState!.invalidateField(name: 'name');
+      _formKey.currentState!.invalidateField(name: 'currency');
+      _formKey.currentState!.invalidateField(name: 'category', errorText: 'Choose a given category');
+      _formKey.currentState!.invalidateField(name: 'participants');
+      print('Not validated');
+    } //TODO: handling the generation of the users array
+
+
+    //log(_formKey.currentState!.fields['title']!.value);
+  }
+}

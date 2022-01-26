@@ -53,3 +53,9 @@ class MyApp extends StatelessWidget {
     }
   }
 }
+
+//TODO: login page, then handle the logged user
+//TODO: recognize a user in a group
+//TODO: create the balance page, insert a balance for each user of the group
+//TODO: adjust the app
+
