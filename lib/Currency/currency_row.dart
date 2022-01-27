@@ -28,7 +28,7 @@ class CurrencyRow extends StatefulWidget {
 }
 
 class _CurrencyRowState extends State<CurrencyRow> {
-  late Future<RealTimeCurrency> _currencies;
+  late Future<RealTimeCurrency?> _currencies;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _CurrencyRowState extends State<CurrencyRow> {
         : FutureBuilder(
             future: _currencies,
             builder: (BuildContext context,
-                AsyncSnapshot<RealTimeCurrency> snapshot) {
+                AsyncSnapshot<RealTimeCurrency?> snapshot) {
               if (snapshot.hasData) {
                 num realTimeCurrency = 1;
                 if (snapshot.data!.data.containsKey(currency)) {

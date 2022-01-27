@@ -19,15 +19,17 @@ class ExpenseDetail extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Text(
-            _expense.currency == _group.getCurrency()
-                ? CurrencyFormatter.format(
-                    _expense.amount.toDouble(), _group.getCurrency())
-                : CurrencyFormatter.format(
-                    _expense.convertedAmount!.toDouble(), _group.getCurrency()),
-            style: const TextStyle(
-              fontSize: 30,
-
+          Padding(
+            padding: const EdgeInsets.only(top: 18.0),
+            child: Text(
+              _expense.currency == _group.getCurrency()
+                  ? CurrencyFormatter.format(
+                      _expense.amount.toDouble(), _group.getCurrency())
+                  : CurrencyFormatter.format(
+                      _expense.convertedAmount!.toDouble(), _group.getCurrency()),
+              style: const TextStyle(
+                fontSize: 30,
+              ),
             ),
           ),
           _expense.currency == _group.getCurrency()
@@ -37,7 +39,7 @@ class ExpenseDetail extends StatelessWidget {
                       _expense.amount.toDouble(), _expense.currency),
                 ),
           Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            padding: const EdgeInsets.only(top: 50, bottom: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -65,19 +67,21 @@ class ExpenseDetail extends StatelessWidget {
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(bottom: 8.0),
-            child: Text(
-              "For:",
-              style: TextStyle(
-                fontSize: 20,
+          Padding(
+            padding: const EdgeInsets.only(top: 30, bottom: 8.0, left: 10.0),
+            child: Row(children: const [
+              Text(
+                "For:",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
               ),
-            ),
+            ]),
           ),
           Column(
             children: _expense.users
                 .map((e) => Card(
-                  child: ListTile(
+                      child: ListTile(
                         title: Text(
                           e.toString(),
                           style: const TextStyle(color: Colors.blue),
@@ -87,7 +91,7 @@ class ExpenseDetail extends StatelessWidget {
                             _group.getCurrency())),
                         //Text(_expense.amountPerUser().toStringAsFixed(2)),
                       ),
-                ))
+                    ))
                 .toList(),
           )
         ],

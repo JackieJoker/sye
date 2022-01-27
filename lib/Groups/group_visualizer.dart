@@ -23,7 +23,7 @@ class GroupVisualizer extends StatelessWidget {
         category: routeData['category'],
         creator: routeData['creator'],
     );
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         Navigator.push(
             context,

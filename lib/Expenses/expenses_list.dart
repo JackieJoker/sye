@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/database.dart';
 import 'package:sye/Classes/swipeable_item.dart';
@@ -19,8 +17,11 @@ class ExpensesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(DB.getExpensesList(_groupId) == null) {
+      return const SizedBox.shrink();
+    }
     return FirebaseDatabaseListView(
-      query: DB.getExpensesList(_groupId).orderByChild('order'),
+      query: DB.getExpensesList(_groupId)!.orderByChild('order'),
       itemBuilder: (context, snapshot) {
         var expense = snapshot.value as Map;
         return SwipeableItem(
@@ -54,6 +55,6 @@ class ExpensesList extends StatelessWidget {
   }
 
   Function _delete(String key) {
-    return () => DB.getExpensesList(_groupId).child(key).remove();
+    return () => DB.getExpensesList(_groupId)!.child(key).remove();
   }
 }

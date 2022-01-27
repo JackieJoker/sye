@@ -113,8 +113,11 @@ class ExpenseForm extends StatelessWidget {
                 firstDate: DateTime(2010),
                 lastDate: DateTime(2030),
               ),
+              DB.getUsersList(_groupId) == null ?
+              const SizedBox.shrink()
+                  :
               FirebaseDatabaseQueryBuilder(
-                query: DB.getUsersList(_groupId),
+                query: DB.getUsersList(_groupId)!,
                 builder: (BuildContext context,
                     FirebaseQueryBuilderSnapshot snapshot, Widget? child) {
                   if (snapshot.isFetching) {

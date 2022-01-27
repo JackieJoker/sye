@@ -24,8 +24,11 @@ class EditExpensePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(DB.getExpense(_groupId, _expenseId) == null){
+      return const SizedBox.shrink();
+    }
     return FirebaseDatabaseQueryBuilder(
-        query: DB.getExpense(_groupId, _expenseId),
+        query: DB.getExpense(_groupId, _expenseId)!,
         builder:
             (BuildContext context, FirebaseQueryBuilderSnapshot snapshot,
             Widget? child) {

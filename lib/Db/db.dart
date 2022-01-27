@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:sye/get_device_id.dart';
@@ -14,35 +15,40 @@ abstract class DB {
   static List<String> userKeys = [];
 
 
-  static DatabaseReference getExpensesList(String groupId) {
+  static DatabaseReference? getExpensesList(String groupId) {
     getGroups();
-    return _groups.child(groupId + "/expenses");
+    return _groups?.child(groupId + "/expenses");
   }
 
 
-  static DatabaseReference getUsersList(String groupId) {
+  static DatabaseReference? getUsersList(String groupId) {
     getGroups();
-    return _groups.child(groupId + '/participants');
+    return _groups?.child(groupId + '/participants');
 
   }
 
-  static DatabaseReference getExpense(String groupId, String expenseId) {
+  static DatabaseReference? getExpense(String groupId, String expenseId) {
     getGroups();
-    return _groups.child(groupId + "/expenses/" + expenseId);
+    return _groups?.child(groupId + "/expenses/" + expenseId);
   }
 
   static Future<void> updateUsers(String groupId) async {
-    getGroups();
-    DatabaseEvent event =
-    await
-    _groups
-        .child(groupId + '/participants')
-        .once();
-    Map<dynamic, dynamic>? dbMap = event.snapshot.value as Map<dynamic, dynamic>?;
-    List<String>? usersList = dbMap!.values.cast<String>().toList();
-    users = usersList;
-    List<String>? keysList = dbMap.keys.cast<String>().toList();
-    userKeys = keysList;
+    //This line is to make unit and widget testing without calling Firebase
+    if(!Platform.environment.containsKey('FLUTTER_TEST')) {
+      getGroups();
+      DatabaseEvent event =
+      await
+      _groups
+          .child(groupId + '/participants')
+          .once();
+      Map<dynamic, dynamic>? dbMap = event.snapshot.value as Map<
+          dynamic,
+          dynamic>?;
+      List<String>? usersList = dbMap!.values.cast<String>().toList();
+      users = usersList;
+      List<String>? keysList = dbMap.keys.cast<String>().toList();
+      userKeys = keysList;
+    }
   }
 
   static void addExpense(String groupId, Map expense){
@@ -64,15 +70,18 @@ abstract class DB {
   }
 
   static getGroups() async {
-    String userId = await DeviceId.getDeviceDetails();
-    DatabaseReference groups = FirebaseDatabase.instance.ref(userId + '/groups');
-    DatabaseEvent g = await groups.once();
-    //setGroup(groups);
-    if (g.snapshot.exists) {
-      setGroup(groups);
-    } else {
-      groups.push();
-      setGroup(groups);
+    //This line is to make unit and widget testing without calling Firebase
+    if(!Platform.environment.containsKey('FLUTTER_TEST')){
+      String userId = await DeviceId.getDeviceDetails();
+      DatabaseReference groups = FirebaseDatabase.instance.ref(userId + '/groups');
+      DatabaseEvent g = await groups.once();
+      //setGroup(groups);
+      if (g.snapshot.exists) {
+        setGroup(groups);
+      } else {
+        groups.push();
+        setGroup(groups);
+      }
     }
   }
 
