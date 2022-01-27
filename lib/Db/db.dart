@@ -100,4 +100,12 @@ abstract class DB {
     await ref.update(m); //
   }
   //we need to perform a join fo each group to retrieve all the group data, e.g. expenses,name, partecipants etc..
+
+
+  /// Register a user if not present in DB
+  static Future<void> registerUser(String firebaseId) async {
+    String userId = await DeviceId.getDeviceDetails();
+    DatabaseReference user = _users.child(userId + '/uid');
+    user.set(firebaseId);
+  }
 }

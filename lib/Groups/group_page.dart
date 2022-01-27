@@ -4,6 +4,7 @@ import 'package:sye/Groups/groups_list.dart';
 import 'package:sye/Groups/new_group_form_page.dart';
 import 'package:sye/login.dart';
 
+import '../auth_gate.dart';
 import '../profile_page.dart';
 
 class GroupPage extends StatelessWidget {
@@ -21,7 +22,7 @@ class GroupPage extends StatelessWidget {
               child: Text("Split Your Expenses")
             ),
             GestureDetector(
-                onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage()));},
+                onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthGate()));},
                 child: Icon(Icons.menu)
             )
           ],
