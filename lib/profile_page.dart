@@ -17,7 +17,8 @@ class ProfilePage extends StatelessWidget {
         ),
         AppleProviderConfiguration(),
       ],
-      avatarSize: 24,
+      avatarSize: 120,
+      avatarPlaceholderColor: Colors.blue,
     );
   }
 }
