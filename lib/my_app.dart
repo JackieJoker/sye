@@ -4,6 +4,8 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/i10n.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
+import 'package:sye/auth_gate.dart';
+import 'package:sye/join_utenti_gruppi.dart';
 import 'home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Groups/group_page.dart';
