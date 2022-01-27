@@ -187,6 +187,7 @@ class EditGroupPage extends StatelessWidget {
                                 onSubmitted: (text) {
                                   if (text.isNotEmpty){
                                     usersList.add(text);
+                                    log(usersList.toString());
                                     eCtrl.clear();
                                     //_formKey.currentState?.fields['participants']?.didChange(usersList);
                                   }
@@ -313,7 +314,9 @@ class EditGroupPage extends StatelessWidget {
       _formKey.currentState!.invalidateField(name: 'category', errorText: 'Choose a given category');
       _formKey.currentState!.invalidateField(name: 'participants');
       print('Not validated');
-    } //TODO: handling the generation of the users array
+    }
+    //TODO: handling the generation of the users array
+    //TODO: updating also the balances of new users
 
 
     //log(_formKey.currentState!.fields['title']!.value);

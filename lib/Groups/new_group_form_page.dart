@@ -325,6 +325,10 @@ class NewGroupFormPage extends StatelessWidget {
     if (valid) {
       _formKey.currentState!.save();
       Map<String, String> mapUsers = getUserList(_formKey.currentState?.fields['participants']?.value);
+      Map balance = {};
+      mapUsers.forEach((key, value) {
+        balance[key] = 0;
+      });
 
       var keys = _formKey.currentState!.fields.keys;
       Map<String,dynamic> edited = {};
@@ -332,7 +336,7 @@ class NewGroupFormPage extends StatelessWidget {
       for (var element in keys) {
         edited[element] = "";
       }
-
+      edited.addAll({'balances' : balance});
       edited.update('name', (value) => _formKey.currentState!.fields['name']!.value);
       edited.update('currency', (value) => _formKey.currentState?.fields['currency']?.value);
       edited.update('category', (value) => _formKey.currentState?.fields['category']?.value);

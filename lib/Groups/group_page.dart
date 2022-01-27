@@ -5,6 +5,7 @@ import 'package:sye/Groups/new_group_form_page.dart';
 import 'package:sye/login.dart';
 
 import '../profile_page.dart';
+import '../Db/db.dart';
 
 class GroupPage extends StatelessWidget {
   const GroupPage({Key? key}) : super(key: key);
@@ -37,7 +38,22 @@ class GroupPage extends StatelessWidget {
           },
           tooltip: "Add a new expense",
           child: const Icon(Icons.add)),
-      body: const GroupsList(),
+      body: FutureBuilder(
+        future: DB.checkUser(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            bool? condition = snapshot.data as bool;
+            if (condition) {
+              return const GroupsList();
+            } else {
+              DB.addUser();
+              return const GroupsList();
+            }
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
+      ),
     );
   }
 }

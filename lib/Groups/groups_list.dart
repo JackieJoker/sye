@@ -7,6 +7,7 @@ import 'package:sye/Groups/group.dart';
 import 'package:sye/Groups/group_visualizer.dart';
 import 'package:sye/Classes/swipeable_item.dart';
 import '../Db/db.dart';
+import '../get_device_id.dart';
 
 /*class GroupsList extends StatefulWidget {
   const GroupsList({Key? key}) : super(key: key);
@@ -74,7 +75,7 @@ class _GroupsListState extends State<GroupsList> {
 }*/
 
 
-class GroupsList extends StatelessWidget {
+/*class GroupsList extends StatelessWidget {
   const GroupsList({Key? key})
       : super(key: key);
 
@@ -97,5 +98,49 @@ class GroupsList extends StatelessWidget {
 
   Function _delete(String key) {
     return () => DB.getGroup().child(key).remove();
+  }
+}*/
+class GroupsList extends StatelessWidget {
+  const GroupsList({Key? key}) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: getId(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            String? id = snapshot.data as String;
+            return FirebaseDatabaseListView(
+              query: FirebaseDatabase.instance.ref("users_groups/" + id),
+              itemBuilder: (context, userSnapshot) {
+                String groupId = userSnapshot.key!;
+                return FirebaseDatabaseListView(
+                  query: FirebaseDatabase.instance.ref('groups/' + groupId),
+                  itemBuilder: (context, snapshot) {
+                    var group = snapshot.value as Map;
+                    return /*Text(group["name"]);*/
+                      SwipeableItem(
+                        item: GroupVisualizer(route: group, k: snapshot.key!),
+                        onDelete: _delete(snapshot.key!),
+                      );
+                  },
+                );
+              },
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
+        }
+    );
+  }
+
+  Function _delete(String key) {
+    return () => DB.getGroup().child(key).remove();
+  }
+
+  Future<String?> getId() async {
+    var id = await DeviceId.getDeviceDetails();
+    return id;
   }
 }

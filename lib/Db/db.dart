@@ -1,11 +1,12 @@
 import 'dart:developer';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:sye/get_device_id.dart';
 
 abstract class DB {
-  static var _groups; //TODO: handle the error on this variable
+  static DatabaseReference _groups = FirebaseDatabase.instance.ref("groups");
   static final DatabaseReference _users = FirebaseDatabase.instance.ref("users");
   static final DatabaseReference _groupUsers = FirebaseDatabase.instance.ref("groups_users");
   static final DatabaseReference _userGroups = FirebaseDatabase.instance.ref("users_groups");
@@ -14,22 +15,37 @@ abstract class DB {
   static List<String> users = [];
   static List<String> userKeys = [];
 
-
+  static downloadGroup() {}
+  static Future<bool?> checkUser() async {
+    String x = await DeviceId.getDeviceDetails();
+    DatabaseReference check = _users.child(x);
+    DatabaseEvent ev = await check.once();
+    if (ev.snapshot.exists) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  static Future<void> addUser() async {
+    String x = await DeviceId.getDeviceDetails();
+    _users.child(x).push();
+    _userGroups.child(x).push();
+  }
   static DatabaseReference? getExpensesList(String groupId) {
     getGroups();
-    return _groups?.child(groupId + "/expenses");
+    return _groups.child(groupId + "/expenses");
   }
 
 
   static DatabaseReference? getUsersList(String groupId) {
     getGroups();
-    return _groups?.child(groupId + '/participants');
+    return _groups.child(groupId + '/participants');
 
   }
 
   static DatabaseReference? getExpense(String groupId, String expenseId) {
     getGroups();
-    return _groups?.child(groupId + "/expenses/" + expenseId);
+    return _groups.child(groupId + "/expenses/" + expenseId);
   }
 
   static Future<void> updateUsers(String groupId) async {
@@ -51,15 +67,32 @@ abstract class DB {
     }
   }
 
+  static Future<void> editBalance(Map balance, String x) async {
+    String userId = await DeviceId.getDeviceDetails();
+    DatabaseReference ref = FirebaseDatabase.instance.ref(userId + '/' + 'groups' + '/' + x + '/balances');
+    DatabaseEvent bal = await ref.once();
+    if (bal.snapshot.exists) {
+      Map trueBalance = bal.snapshot.value as Map;
+      trueBalance.forEach((key, value) {
+        trueBalance.update(key, (value) => value + balance[key]);
+      });
+      ref.set(trueBalance);
+    }
+  }
+
   static void addExpense(String groupId, Map expense){
     DatabaseReference expensesDB = _groups.child(groupId + '/expenses');
     DatabaseReference newExpenseDB = expensesDB.push();
     newExpenseDB.set(expense);
   }
 
-  static void addGroup(Map group){
+  static Future<void> addGroup(Map group) async {
+    String userId = await DeviceId.getDeviceDetails();
+    DatabaseReference join = _userGroups.child(userId);
     DatabaseReference newGroupDB = _groups.push();
+    String? newGroupKey = newGroupDB.key;
     newGroupDB.set(group);
+    join.set(newGroupKey);
   }
 
   static Future<void> editExpense(String groupId, String expenseId, Map expense) async {
