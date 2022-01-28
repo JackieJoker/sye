@@ -146,7 +146,7 @@ class EditGroupPage extends StatelessWidget {
                                       onSubmitted: (text) {
                                         if (text.isNotEmpty){
                                           usersList[index] = text;
-                                          //_formKey.currentState?.fields['participants']?.didChange(usersList);
+                                          _formKey.currentState?.fields['participants']?.didChange(usersList);
                                         }
                                       },
                                       controller: eCtrl1,
@@ -157,7 +157,7 @@ class EditGroupPage extends StatelessWidget {
                                             onTap: () {
                                               if (index != 0) {
                                                 usersList.removeAt(index);
-                                                //_formKey.currentState?.fields['participants']?.didChange(usersList);
+                                                _formKey.currentState?.fields['participants']?.didChange(usersList);
                                               }
                                             },
                                             child: const Icon(Icons.clear),
@@ -189,7 +189,7 @@ class EditGroupPage extends StatelessWidget {
                                     usersList.add(text);
                                     log(usersList.toString());
                                     eCtrl.clear();
-                                    //_formKey.currentState?.fields['participants']?.didChange(usersList);
+                                    _formKey.currentState?.fields['participants']?.didChange(usersList);
                                   }
                                 },
                                 decoration: const InputDecoration(
@@ -204,7 +204,7 @@ class EditGroupPage extends StatelessWidget {
                                 onTap: () {
                                   if (tempUser!.isNotEmpty) {
                                     usersList.add(tempUser!);
-                                    //_formKey.currentState?.fields['participants']?.didChange(usersList);
+                                    _formKey.currentState?.fields['participants']?.didChange(usersList);
                                     tempUser = null;
                                   }
                                 },
@@ -296,10 +296,9 @@ class EditGroupPage extends StatelessWidget {
         edited[element] = "";
       }
       if (_formKey.currentState!.fields['name']!.value != null) {
-        edited.update(
-            'name', (value) => _formKey.currentState!.fields['name']!.value);
+        edited.update('name', (value) => _formKey.currentState!.fields['name']!.value);
       } else {
-        edited.remove('descripton');
+        edited.remove('name');
       }
       edited.update('participants', (value) => mapUsers);
       if (_formKey.currentState?.fields['description']?.value != null) {
