@@ -40,7 +40,16 @@ abstract class DB {
   static DatabaseReference? getUsersList(String groupId) {
     getGroups();
     return _groups.child(groupId + '/participants');
+  }
 
+  static Future<bool> isGroupPresent(String groupId) async {
+    getGroups();
+    DataSnapshot group = await _groups.child(groupId).get();
+    if (group.exists) {
+      return true;
+    } else{
+      return false;
+    }
   }
 
   static DatabaseReference? getExpense(String groupId, String expenseId) {

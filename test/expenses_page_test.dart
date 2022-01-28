@@ -97,4 +97,16 @@ void main() {
     ///I want to be sure that the old page is not anymore visualized
     expect(find.byType(ExpenseElement), findsNothing);
   });
+
+  testWidgets('Group name is present', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ExpensesPage(
+            groupId: 'groupId', groupCurrency: 'EUR', group: group),
+      ),
+    );
+
+    ///I want to be sure that the group name is visualized
+    expect(find.text(group.getName()), findsOneWidget);
+  });
 }

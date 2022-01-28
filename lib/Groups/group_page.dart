@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sye/Expenses/expenses_page.dart';
+import 'package:sye/Groups/group_dialog.dart';
 import 'package:sye/Groups/groups_list.dart';
-import 'package:sye/Groups/new_group_form_page.dart';
-import 'package:sye/login.dart';
-
 import '../auth_gate.dart';
 import '../profile_page.dart';
 import '../Db/db.dart';
@@ -24,18 +21,14 @@ class GroupPage extends StatelessWidget {
             ),
             GestureDetector(
                 onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthGate()));},
-                child: Icon(Icons.menu)
+                child: const Icon(Icons.menu)
             )
           ],
         )
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    //builder: (context) => NewGroupPage()));
-            builder: (context) => NewGroupFormPage()));
+            askedToLead(context);
           },
           tooltip: "Add a new expense",
           child: const Icon(Icons.add)),
