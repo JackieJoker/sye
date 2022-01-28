@@ -6,7 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:sye/get_device_id.dart';
 
 abstract class DB {
-  static DatabaseReference _groups = FirebaseDatabase.instance.ref("groups");
+  static final DatabaseReference _groups = FirebaseDatabase.instance.ref("groups");
   static final DatabaseReference _users = FirebaseDatabase.instance.ref("users");
   static final DatabaseReference _groupUsers = FirebaseDatabase.instance.ref("groups_users");
   static final DatabaseReference _userGroups = FirebaseDatabase.instance.ref("users_groups");
@@ -28,22 +28,24 @@ abstract class DB {
   }
   static Future<void> addUser() async {
     String x = await DeviceId.getDeviceDetails();
-    _users.child(x).push();
-    _userGroups.child(x).push();
+    log(x);
+    //_users.push();
+    //_userGroups.push();
+    DatabaseReference newUser = _users.child(x);
+    newUser.push();
+    DatabaseReference newUserGroup = _userGroups.child(x);
+    newUserGroup.push();
   }
   static DatabaseReference? getExpensesList(String groupId) {
-    getGroups();
     return _groups.child(groupId + "/expenses");
   }
 
 
   static DatabaseReference? getUsersList(String groupId) {
-    getGroups();
     return _groups.child(groupId + '/participants');
   }
 
   static Future<bool> isGroupPresent(String groupId) async {
-    getGroups();
     DataSnapshot group = await _groups.child(groupId).get();
     if (group.exists) {
       return true;
@@ -53,14 +55,12 @@ abstract class DB {
   }
 
   static DatabaseReference? getExpense(String groupId, String expenseId) {
-    getGroups();
     return _groups.child(groupId + "/expenses/" + expenseId);
   }
 
   static Future<void> updateUsers(String groupId) async {
     //This line is to make unit and widget testing without calling Firebase
     if(!Platform.environment.containsKey('FLUTTER_TEST')) {
-      getGroups();
       DatabaseEvent event =
       await
       _groups
@@ -101,7 +101,7 @@ abstract class DB {
     DatabaseReference newGroupDB = _groups.push();
     String? newGroupKey = newGroupDB.key;
     newGroupDB.set(group);
-    join.set(newGroupKey);
+    join.child(newGroupKey!).push();
   }
 
   static Future<void> editExpense(String groupId, String expenseId, Map expense) async {
@@ -111,7 +111,7 @@ abstract class DB {
     expensesDB.set(expense);
   }
 
-  static getGroups() async {
+  /*static getGroups() async {
     //This line is to make unit and widget testing without calling Firebase
     if(!Platform.environment.containsKey('FLUTTER_TEST')){
       String userId = await DeviceId.getDeviceDetails();
@@ -125,20 +125,18 @@ abstract class DB {
         setGroup(groups);
       }
     }
-  }
+  }*/
 
   static DatabaseReference getGroup() => _groups;
 
-  static void setGroup(DatabaseReference x) { _groups = x; }
+  //static void setGroup(DatabaseReference x) { _groups = x; }
 
   static Future<void> deleteGroup(String x) async {
-    String userId = await DeviceId.getDeviceDetails();
-    DatabaseReference ref = FirebaseDatabase.instance.ref(userId + '/' + 'groups' + '/' + x);
+    DatabaseReference ref = _groups.child(x);
     await ref.remove();
   }
   static Future<void> editGroup(String x, Map<String,Object?> m) async {
-    String userId = await DeviceId.getDeviceDetails();
-    DatabaseReference ref = FirebaseDatabase.instance.ref(userId + '/' + 'groups' + '/' + x);
+    DatabaseReference ref = _groups.child(x);
     await ref.update(m); //
   }
   //we need to perform a join fo each group to retrieve all the group data, e.g. expenses,name, partecipants etc..

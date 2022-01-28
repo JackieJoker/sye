@@ -136,7 +136,7 @@ class GroupsList extends StatelessWidget {
   }
 
   Function _delete(String key) {
-    return () => DB.getGroup().child(key).remove();
+    return () => DB.deleteGroup(key);
   }
 
   Future<String?> getId() async {
