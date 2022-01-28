@@ -353,7 +353,7 @@ class NewGroupFormPage extends StatelessWidget {
       }
 
       log(edited.toString());
-      DB.addGroup(edited);
+      DB.addGroups(edited);
       Navigator.pop(context);
     } else {
       _formKey.currentState!.invalidateField(name: 'name');

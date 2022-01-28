@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:sye/Expenses/expenses_page.dart';
 import 'package:sye/Groups/group.dart';
+import 'package:sye/Groups/group_loader.dart';
 
 class GroupVisualizer extends StatelessWidget {
   final Map routeData;
@@ -28,11 +29,11 @@ class GroupVisualizer extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ExpensesPage(groupId: groupKey, groupCurrency: g.getCurrency(), group: g,)));
+                builder: (context) => GroupLoader(g: groupKey)));
       },
       child: Padding(
         padding: const EdgeInsets.all(5),
-        child: Container(
+        child: SizedBox(
           child:
             Row(
               children: [

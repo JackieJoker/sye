@@ -90,7 +90,7 @@ abstract class DB {
     newExpenseDB.set(expense);
   }
 
-  static Future<void> addGroup(Map group) async {
+  static Future<void> addGroups(Map group) async {
     String userId = await DeviceId.getDeviceDetails();
     DatabaseReference join = _userGroups.child(userId);
     DatabaseReference newGroupDB = _groups.push();
@@ -106,7 +106,9 @@ abstract class DB {
     expensesDB.set(expense);
   }
 
-  static DatabaseReference getGroup() => _groups;
+  static DatabaseReference getGroup(String groupId) {
+    return _groups.child(groupId);
+  }
 
   //static void setGroup(DatabaseReference x) { _groups = x; }
 
