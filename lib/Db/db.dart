@@ -11,7 +11,6 @@ abstract class DB {
   static final DatabaseReference _groupUsers = FirebaseDatabase.instance.ref("groups_users");
   static final DatabaseReference _userGroups = FirebaseDatabase.instance.ref("users_groups");
 
-
   static List<String> users = [];
   static List<String> userKeys = [];
 
@@ -28,13 +27,10 @@ abstract class DB {
   }
   static Future<void> addUser() async {
     String x = await DeviceId.getDeviceDetails();
-    log(x);
-    //_users.push();
-    //_userGroups.push();
     DatabaseReference newUser = _users.child(x);
-    newUser.push();
+    newUser.set(x);
     DatabaseReference newUserGroup = _userGroups.child(x);
-    newUserGroup.push();
+    newUserGroup.set(x);
   }
   static DatabaseReference? getExpensesList(String groupId) {
     return _groups.child(groupId + "/expenses");
@@ -101,7 +97,7 @@ abstract class DB {
     DatabaseReference newGroupDB = _groups.push();
     String? newGroupKey = newGroupDB.key;
     newGroupDB.set(group);
-    join.child(newGroupKey!).push();
+    join.child(newGroupKey!).set(group['name']);
   }
 
   static Future<void> editExpense(String groupId, String expenseId, Map expense) async {
@@ -110,22 +106,6 @@ abstract class DB {
     DatabaseReference expensesDB = groups.child(groupId + "/expenses/" + expenseId);
     expensesDB.set(expense);
   }
-
-  /*static getGroups() async {
-    //This line is to make unit and widget testing without calling Firebase
-    if(!Platform.environment.containsKey('FLUTTER_TEST')){
-      String userId = await DeviceId.getDeviceDetails();
-      DatabaseReference groups = FirebaseDatabase.instance.ref(userId + '/groups');
-      DatabaseEvent g = await groups.once();
-      //setGroup(groups);
-      if (g.snapshot.exists) {
-        setGroup(groups);
-      } else {
-        groups.push();
-        setGroup(groups);
-      }
-    }
-  }*/
 
   static DatabaseReference getGroup() => _groups;
 
@@ -140,7 +120,6 @@ abstract class DB {
     await ref.update(m); //
   }
   //we need to perform a join fo each group to retrieve all the group data, e.g. expenses,name, partecipants etc..
-
 
   /// Register a user if not present in DB
   static Future<void> registerUser(String firebaseId) async {
