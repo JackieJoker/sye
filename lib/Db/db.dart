@@ -29,8 +29,6 @@ abstract class DB {
     String x = await DeviceId.getDeviceDetails();
     DatabaseReference newUser = _users.child(x);
     newUser.set(x);
-    DatabaseReference newUserGroup = _userGroups.child(x);
-    newUserGroup.set(x);
   }
   static DatabaseReference? getExpensesList(String groupId) {
     return _groups.child(groupId + "/expenses");
