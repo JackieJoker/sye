@@ -115,15 +115,27 @@ class GroupsList extends StatelessWidget {
               query: FirebaseDatabase.instance.ref("users_groups/" + id),
               itemBuilder: (context, userSnapshot) {
                 String groupId = userSnapshot.key!;
-                return FirebaseDatabaseListView(
+                return FirebaseDatabaseQueryBuilder(
                   query: FirebaseDatabase.instance.ref('groups/' + groupId),
-                  itemBuilder: (context, snapshot) {
-                    var group = snapshot.value as Map;
-                    return /*Text(group["name"]);*/
-                      SwipeableItem(
-                        item: GroupVisualizer(route: group, k: snapshot.key!),
-                        onDelete: _delete(snapshot.key!),
-                      );
+                  builder: (BuildContext context,
+                      FirebaseQueryBuilderSnapshot userSnapshot, Widget? child) {
+                    if (userSnapshot.isFetching) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (userSnapshot.hasError) {
+                      return Text('Error: ${userSnapshot.error}');
+                    }
+                    //var group = userSnapshot.docs as Map;
+                    List<DataSnapshot> data = userSnapshot.docs;
+                    Map<String, dynamic> group = {};
+                    for (int i = 0; i < data.length; i++) {
+                      group.addAll({data[i].key!: data[i].value});
+                    }
+                    print(group.toString());
+                    return SwipeableItem(
+                      item: GroupVisualizer(route: group, k: groupId),
+                      onDelete: _delete(groupId),
+                    );
                   },
                 );
               },
@@ -144,3 +156,12 @@ class GroupsList extends StatelessWidget {
     return id;
   }
 }
+
+/*itemBuilder: (context, snapshot) {
+var group = snapshot.value as Map;
+return /*Text(group["name"]);*/
+SwipeableItem(
+item: GroupVisualizer(route: group, k: snapshot.key!),
+onDelete: _delete(snapshot.key!),
+);
+},*/

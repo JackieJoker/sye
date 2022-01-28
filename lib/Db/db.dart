@@ -27,8 +27,9 @@ abstract class DB {
   }
   static Future<void> addUser() async {
     String x = await DeviceId.getDeviceDetails();
+    log(x);
     DatabaseReference newUser = _users.child(x);
-    newUser.set(x);
+    newUser.set({'name' :'', 'email' : ''});
   }
   static DatabaseReference? getExpensesList(String groupId) {
     return _groups.child(groupId + "/expenses");
@@ -110,7 +111,8 @@ abstract class DB {
   //static void setGroup(DatabaseReference x) { _groups = x; }
 
   static Future<void> deleteGroup(String x) async {
-    DatabaseReference ref = _groups.child(x);
+    String userId = await DeviceId.getDeviceDetails();
+    DatabaseReference ref = _userGroups.child(userId).child(x);
     await ref.remove();
   }
   static Future<void> editGroup(String x, Map<String,Object?> m) async {

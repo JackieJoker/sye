@@ -44,8 +44,7 @@ class NewGroupFormPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    _onSubmit();
-                    Navigator.pop(context);
+                    _onSubmit(context);
                   })
             ]),
       ),
@@ -284,6 +283,7 @@ class NewGroupFormPage extends StatelessWidget {
                                   if (tempUser!.isNotEmpty) {
                                     usersList.add(tempUser!);
                                     _formKey.currentState?.fields['participants']?.didChange(usersList);
+                                    eCtrl.clear();
                                     tempUser = null;
                                   }
                                 },
@@ -319,7 +319,7 @@ class NewGroupFormPage extends StatelessWidget {
       ),
     );
   }
-  void _onSubmit() {
+  void _onSubmit(BuildContext context) {
 
     var valid = _formKey.currentState!.validate();
     if (valid) {
@@ -354,16 +354,14 @@ class NewGroupFormPage extends StatelessWidget {
 
       log(edited.toString());
       DB.addGroup(edited);
+      Navigator.pop(context);
     } else {
       _formKey.currentState!.invalidateField(name: 'name');
       _formKey.currentState!.invalidateField(name: 'currency');
       _formKey.currentState!.invalidateField(name: 'category', errorText: 'Choose a given category');
       _formKey.currentState!.invalidateField(name: 'participants');
-      print('Not validated');
-    }
-
-
-    //log(_formKey.currentState!.fields['title']!.value);
+      log('Not validated');
+    }//log(_formKey.currentState!.fields['title']!.value);
   }
 
   Map<String,String> getUserList(List<dynamic> uList) {

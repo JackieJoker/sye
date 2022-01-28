@@ -29,7 +29,10 @@ class ExpensesPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                child: const Icon(Icons.arrow_back_ios_outlined),
+                child: const Icon(
+                    Icons.arrow_back_ios_outlined,
+                  size: 20,
+                ),
                 onTap: () => Navigator.pop(context),
               ),
               Column(
