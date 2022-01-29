@@ -205,6 +205,7 @@ class EditGroupPage extends StatelessWidget {
                                   if (tempUser!.isNotEmpty) {
                                     usersList.add(tempUser!);
                                     _formKey.currentState?.fields['participants']?.didChange(usersList);
+                                    eCtrl.clear();
                                     tempUser = null;
                                   }
                                 },

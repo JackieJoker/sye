@@ -101,8 +101,9 @@ class _GroupsListState extends State<GroupsList> {
   }
 }*/
 class GroupsList extends StatelessWidget {
-  const GroupsList({Key? key}) : super(key: key);
+  final _notifier;
 
+  const GroupsList({Key? key, notifier}) : _notifier = notifier, super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +134,7 @@ class GroupsList extends StatelessWidget {
                     }
                     print(group.toString());
                     return SwipeableItem(
-                      item: GroupVisualizer(route: group, k: groupId),
+                      item: GroupVisualizer(route: group, k: groupId, notifier: _notifier,),
                       onDelete: _delete(groupId),
                     );
                   },

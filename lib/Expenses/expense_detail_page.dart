@@ -63,6 +63,10 @@ class ExpenseDetailPage extends StatelessWidget {
             appBar: AppBar(
               centerTitle: true,
               title: Text(_expense.title),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_outlined, size: 20,),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
               actions: [
                 TextButton(
                   child: const Text(

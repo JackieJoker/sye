@@ -32,34 +32,37 @@ class SelectUserPage extends StatelessWidget {
               appBar: AppBar(
                 title: const Text('Select a user'),
               ),
-              body: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: Text(
-                        "Who are you?",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w700),
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: Text(
+                          "Who are you?",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w700),
+                        ),
                       ),
-                    ),
-                    ...result
-                        .map((e) => InkWell(
-                            child: Card(
-                              child: ListTile(
-                                title: Text(
-                                  e.toString(),
+                      ...result
+                          .map((e) => InkWell(
+                              child: Card(
+                                child: ListTile(
+                                  title: Text(
+                                    e.toString(),
+                                  ),
                                 ),
                               ),
-                            ),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              Navigator.of(context).pop();
-                            }))
-                        .toList()
-                  ],
+                              onTap: () {
+                                DB.importGroup(code);
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              }))
+                          .toList()
+                    ],
+                  ),
                 ),
               ));
         });

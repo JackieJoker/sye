@@ -16,7 +16,12 @@ class AuthGate extends StatelessWidget {
         // User is not signed in
         if (!snapshot.hasData) {
           return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_outlined, size: 20,),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
             body: const SignInScreen(
                 providerConfigs: [
                   EmailProviderConfiguration(),

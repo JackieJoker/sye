@@ -25,12 +25,14 @@ abstract class DB {
       return false;
     }
   }
+
   static Future<void> addUser() async {
     String x = await DeviceId.getDeviceDetails();
     log(x);
     DatabaseReference newUser = _users.child(x);
     newUser.set({'name' :'', 'email' : ''});
   }
+
   static DatabaseReference? getExpensesList(String groupId) {
     return _groups.child(groupId + "/expenses");
   }
@@ -97,6 +99,13 @@ abstract class DB {
     String? newGroupKey = newGroupDB.key;
     newGroupDB.set(group);
     join.child(newGroupKey!).set(group['name']);
+  }
+
+  static Future<void> importGroup(String groupId) async {
+    String userId = await DeviceId.getDeviceDetails();
+    DatabaseReference join = _userGroups.child(userId);
+    DataSnapshot group = await _groups.child(groupId).get();
+    join.child(groupId).set((group.value! as Map)['name']);
   }
 
   static Future<void> editExpense(String groupId, String expenseId, Map expense) async {
