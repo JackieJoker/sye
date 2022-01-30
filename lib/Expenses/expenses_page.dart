@@ -43,7 +43,13 @@ class _ExpensesPageState extends State<ExpensesPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> uList = castMapUsersToList(widget._group.getUsers()!);
+    List<dynamic>? uList;
+    if(widget._group.getUsers() == null) {
+      uList = null;
+    } else {
+      uList = castMapUsersToList(widget._group.getUsers()!);
+
+    }
     return Scaffold(
         appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -66,6 +72,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
                               builder: (context) => EditGroupPage(group: widget._group))
                       ),
                     ),
+                    (uList == null) ? const SizedBox.shrink() :
                     Padding(
                       padding: const EdgeInsets.all(3.0),
                       child: Wrap(
@@ -73,7 +80,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
                           return Padding(
                             padding: const EdgeInsets.only(right: 7),
                             child: Text(
-                              uList[index],
+                              uList![index],
                               style: const TextStyle(
                                   fontWeight: FontWeight.normal,
                                   fontSize: 13
@@ -136,21 +143,3 @@ class _ExpensesPageState extends State<ExpensesPage> {
     return l;
   }
 }
-
-/*class ExpensesPage extends StatelessWidget {
-  final String _groupId;
-  final String _groupCurrency;
-  final Group _group;
-
-  const ExpensesPage(
-      {required String groupId,
-      required String groupCurrency,
-      required Group group,
-      Key? key})
-      : _groupId = groupId,
-        _groupCurrency = groupCurrency,
-        _group = group,
-        super(key: key);
-
-
-}*/

@@ -33,11 +33,19 @@ abstract class DB {
   }
 
   static DatabaseReference? getExpensesList(String groupId) {
+    //This line is to make unit and widget testing without calling Firebase
+    if(Platform.environment.containsKey('FLUTTER_TEST')) {
+      return null;
+    }
     return _groups.child(groupId + "/expenses");
   }
 
 
   static DatabaseReference? getUsersList(String groupId) {
+    //This line is to make unit and widget testing without calling Firebase
+    if(Platform.environment.containsKey('FLUTTER_TEST')) {
+      return null;
+    }
     return _groups.child(groupId + '/participants');
   }
 
@@ -51,6 +59,10 @@ abstract class DB {
   }
 
   static DatabaseReference? getExpense(String groupId, String expenseId) {
+    //This line is to make unit and widget testing without calling Firebase
+    if(Platform.environment.containsKey('FLUTTER_TEST')) {
+      return null;
+    }
     return _groups.child(groupId + "/expenses/" + expenseId);
   }
 

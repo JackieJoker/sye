@@ -12,6 +12,9 @@ class SelectUserPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(DB.getUsersList(code) == null) {
+      return const SizedBox.shrink();
+    }
     return FirebaseDatabaseQueryBuilder(
         query: DB.getUsersList(code)!,
         builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot,
@@ -31,6 +34,10 @@ class SelectUserPage extends StatelessWidget {
           return Scaffold(
               appBar: AppBar(
                 title: const Text('Select a user'),
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_outlined, size: 20,),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
               ),
               body: SingleChildScrollView(
                 child: Padding(

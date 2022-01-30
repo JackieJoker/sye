@@ -19,6 +19,10 @@ class ImportGroupPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Import a group'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_outlined, size: 20,),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
