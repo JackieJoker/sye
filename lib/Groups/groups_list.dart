@@ -157,12 +157,3 @@ class GroupsList extends StatelessWidget {
     return id;
   }
 }
-
-/*itemBuilder: (context, snapshot) {
-var group = snapshot.value as Map;
-return /*Text(group["name"]);*/
-SwipeableItem(
-item: GroupVisualizer(route: group, k: snapshot.key!),
-onDelete: _delete(snapshot.key!),
-);
-},*/

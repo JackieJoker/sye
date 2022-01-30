@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sye/Groups/group_page.dart';
 import 'package:sye/balances_page.dart';
 
 import 'Expenses/expenses_page.dart';
@@ -31,16 +30,6 @@ class TabletLayout extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
-            home: const GroupPage(),
-            ),
-          ),
-        Flexible(
-          flex: 1,
-          child: MaterialApp(
-            title: 'Split Your Expenses',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
             home: ExpensesPage(
               groupId: _groupId,
               groupCurrency: _groupCurrency,
@@ -48,6 +37,10 @@ class TabletLayout extends StatelessWidget {
             ),
           ),
         ),
+        Flexible(
+          flex: 1,
+          child: BalancesPage(_groupId, _groupCurrency, _group),
+        )
       ],
     );
   }

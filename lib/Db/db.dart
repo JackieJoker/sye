@@ -28,7 +28,6 @@ abstract class DB {
 
   static Future<void> addUser() async {
     String x = await DeviceId.getDeviceDetails();
-    log(x);
     DatabaseReference newUser = _users.child(x);
     newUser.set({'name' :'', 'email' : ''});
   }
@@ -75,12 +74,16 @@ abstract class DB {
 
   static Future<void> editBalance(Map balance, String x) async {
     String userId = await DeviceId.getDeviceDetails();
-    DatabaseReference ref = FirebaseDatabase.instance.ref(userId + '/' + 'groups' + '/' + x + '/balances');
+    DatabaseReference ref = FirebaseDatabase.instance.ref('groups/' + x + '/balances');
     DatabaseEvent bal = await ref.once();
     if (bal.snapshot.exists) {
       Map trueBalance = bal.snapshot.value as Map;
       trueBalance.forEach((key, value) {
-        trueBalance.update(key, (value) => value + balance[key]);
+        if (balance.containsKey(key)) {
+          trueBalance.update(key, (value) => value + balance[key]);
+        } else {
+          trueBalance.update(key, (value) => value);
+        }
       });
       ref.set(trueBalance);
     }
@@ -118,6 +121,10 @@ abstract class DB {
   static DatabaseReference getGroup(String groupId) {
     return _groups.child(groupId);
   }
+  
+  static DatabaseReference getGroupBalances(String groupId) {
+    return _groups.child(groupId).child('balances');
+  }
 
   //static void setGroup(DatabaseReference x) { _groups = x; }
 
@@ -126,9 +133,11 @@ abstract class DB {
     DatabaseReference ref = _userGroups.child(userId).child(x);
     await ref.remove();
   }
-  static Future<void> editGroup(String x, Map<String,Object?> m) async {
+  static Future<void> editGroup(String x, Map<String,Object?> m, Map<String,Object?> bal) async {
     DatabaseReference ref = _groups.child(x);
-    await ref.update(m); //
+    DatabaseReference balances = ref.child('balances');
+    await ref.update(m);
+    await balances.update(bal);
   }
   //we need to perform a join fo each group to retrieve all the group data, e.g. expenses,name, partecipants etc..
 
@@ -138,4 +147,18 @@ abstract class DB {
     DatabaseReference user = _users.child(userId + '/uid');
     user.set(firebaseId);
   }
+
+  /*static Future<List> joinIdNameUser (String groupId, List ids) async {
+    List names = [];
+    for (var element in ids) {
+      DatabaseReference userRef = FirebaseDatabase.instance.ref(groupId + '/participants/' + element);
+      DatabaseEvent userName = await userRef.once();
+      Map? mapData = userName.snapshot.value as Map;
+      log(mapData.toString());
+      if (userName.snapshot.exists) {
+        names.add(mapData[element]);
+      }
+    }
+    return names;
+  }*/
 }

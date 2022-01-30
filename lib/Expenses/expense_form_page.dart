@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:sye/Db/db.dart';
 import 'package:intl/intl.dart';
@@ -97,6 +99,7 @@ class ExpenseFormPage extends StatelessWidget {
     editedBalance.forEach((user, value) {
        editedBalance.update(user, (value) => value - bal/editedBalance.length);
     });
+    log(editedBalance.toString());
     DB.editBalance(editedBalance, _groupId);
     print(editedBalance.toString());
     DateTime date = edited['date'];

@@ -34,7 +34,7 @@ class EditGroupPage extends StatelessWidget {
                   fontSize: 14
                 ),
               ),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage())),
+              onTap: () => Navigator.pop(context),
             ),
             const Text('Edit the Group',
               style: TextStyle(
@@ -289,6 +289,10 @@ class EditGroupPage extends StatelessWidget {
     if (valid) {
       _formKey.currentState!.save();
       Map<String, String> mapUsers = getUserList(l);
+      Map<String, Object?> balance = {};
+      mapUsers.forEach((key, value) {
+        balance[key] = 0;
+      });
 
       var keys = _formKey.currentState!.fields.keys;
       Map<String,dynamic> edited = {};
@@ -307,7 +311,7 @@ class EditGroupPage extends StatelessWidget {
       } else {
         edited.remove('description');
       }
-      DB.editGroup(_group.getId(), edited);
+      DB.editGroup(_group.getId(), edited, balance);
     } else {
       _formKey.currentState!.invalidateField(name: 'name');
       _formKey.currentState!.invalidateField(name: 'currency');
@@ -315,7 +319,7 @@ class EditGroupPage extends StatelessWidget {
       _formKey.currentState!.invalidateField(name: 'participants');
       print('Not validated');
     }
-    //TODO: handling the generation of the users array
+
     //TODO: updating also the balances of new users
 
 
