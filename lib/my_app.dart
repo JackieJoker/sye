@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       title: 'Split Your Expenses',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
       home: const HomePage(),
     );

@@ -81,8 +81,8 @@ class _BalancesPageState extends State<BalancesPage> {
                             )
                         ),
                         primaryYAxis: NumericAxis(
-                            minimum: -300,
-                            maximum: 300,
+                            minimum: -600,
+                            maximum: 600,
                             interval: 300,
                             axisLine: const AxisLine(
                                 color: Colors.black,
