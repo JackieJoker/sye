@@ -224,6 +224,7 @@ class NewGroupFormPage extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: TextField(
+                                      key: const Key('02'),
                                       onSubmitted: (text) {
                                         if (text.isNotEmpty){
                                           usersList[index] = text;
@@ -261,6 +262,7 @@ class NewGroupFormPage extends StatelessWidget {
                               fit: FlexFit.tight,
                               flex: 4,
                               child: TextField(
+                                key: const Key('01'),
                                 onChanged: (text) {
                                   tempUser = text;
                                 },

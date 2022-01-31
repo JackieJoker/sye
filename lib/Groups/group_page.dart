@@ -43,7 +43,6 @@ class GroupPage extends StatelessWidget {
             if (condition) {
               return const GroupsList();
             } else {
-              log('ok');
               DB.addUser();
               return const GroupsList();
             }
