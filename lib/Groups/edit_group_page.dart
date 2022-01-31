@@ -116,11 +116,15 @@ class EditGroupPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Container(
-                          child: Text(
-                            'Who Participates? ('+ usersList.length.toString() + '/50)',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Who Participates? ('+ usersList.length.toString() + '/50)',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white70,
+                              ),
                             ),
                           ),
                           alignment: Alignment.centerLeft,
@@ -216,11 +220,12 @@ class EditGroupPage extends StatelessWidget {
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(6),
-                                    color: Colors.blueAccent,
+                                    color: Colors.indigo,
                                     shape: BoxShape.rectangle,
                                   ),
                                   child: const Center(
-                                    child: Text("Add"),
+                                    child: Text("Add",
+                                    style: TextStyle(color: Colors.white),),
                                   ),
                                 ),
                               ),
@@ -246,7 +251,7 @@ class EditGroupPage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
-                        color: Colors.redAccent
+                        color: Color.fromARGB(450, 204, 0, 0)
                       ),
                     ),
                   ),

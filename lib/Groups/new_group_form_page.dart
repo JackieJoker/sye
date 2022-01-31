@@ -168,6 +168,7 @@ class NewGroupFormPage extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
+                      color: Colors.white70,
                     ),
                   ),
                   alignment: Alignment.centerLeft,
@@ -200,6 +201,7 @@ class NewGroupFormPage extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
+                              color: Colors.white70
                             ),
                           ),
                           alignment: Alignment.centerLeft,
@@ -294,11 +296,12 @@ class NewGroupFormPage extends StatelessWidget {
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(6),
-                                    color: Colors.blueAccent,
+                                    color: Colors.indigo,
                                     shape: BoxShape.rectangle,
                                   ),
                                   child: const Center(
-                                    child: Text("Add"),
+                                    child: Text("Add",
+                                    style: TextStyle(color: Colors.white),),
                                   ),
                                 ),
                               ),
