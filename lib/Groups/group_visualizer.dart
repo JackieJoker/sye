@@ -39,7 +39,7 @@ class GroupVisualizer extends StatelessWidget {
         }
       },
       child: Padding(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(8.0),
         child: SizedBox(
           child:
             Row(
@@ -51,7 +51,9 @@ class GroupVisualizer extends StatelessWidget {
                       g.getName(),
                       style: const TextStyle(
                         fontSize: 25,
+                        fontWeight: FontWeight.w700,
                         overflow: TextOverflow.ellipsis,
+                        color: Colors.blueAccent,
                       ),
                     ),
                     if (g.getDescription().toString().isNotEmpty)
@@ -59,6 +61,7 @@ class GroupVisualizer extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 15,
                           overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.w400,
                         ),
                       )
                     else

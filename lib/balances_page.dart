@@ -2,14 +2,14 @@ import 'dart:developer';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutterfire_ui/database.dart';
 import 'package:sye/Db/db.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import 'Groups/group.dart';
+import 'package:number_display/number_display.dart';
 
-//import 'package:charts_flutter/flutter.dart';
 
 class BalancesPage extends StatefulWidget {
   final String _groupId;
@@ -40,6 +40,11 @@ class _BalancesPageState extends State<BalancesPage> {
     data = [];
     Map? userName = widget._group.getUsers();
     log(widget._group.getUsers().toString());
+
+    final display = createDisplay(
+      length: 8,
+      decimal: 2,
+    );
     return Column(
       children: [
         Flexible(
@@ -97,7 +102,8 @@ class _BalancesPageState extends State<BalancesPage> {
                               xValueMapper: (_ChartData data, _) => data.x,
                               //color: (true) ? Colors.green : Colors.red,
                               name: 'Balances',
-                              color: Color.fromRGBO(8, 142, 255, 1)
+                              color: Color.fromRGBO(8, 142, 255, 1),
+                              pointColorMapper: (_ChartData data, _) => (data.y > 0) ? data.goodCol : data.badCol,
                           ),
                         ]
                     ),
@@ -115,6 +121,8 @@ class _BalancesPageState extends State<BalancesPage> {
               padding: const EdgeInsets.all(8),
               itemBuilder: (context, snapshot) {
                 return Card(
+                  elevation: 5,
+                  shadowColor: Colors.deepPurpleAccent,
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -126,6 +134,7 @@ class _BalancesPageState extends State<BalancesPage> {
                           leading: const Icon(
                             Icons.person,
                             size: 45,
+                            color: Colors.deepPurpleAccent,
                           ),
                           title: Text(userName![snapshot.key],
                           style: const TextStyle(
@@ -138,14 +147,17 @@ class _BalancesPageState extends State<BalancesPage> {
                       Flexible(
                           fit: FlexFit.tight,
                           flex: 1,
-                          child: Text(snapshot.value.toString() + ' ' + widget._groupCurrency)
-                      )
+                          child: Text(
+                              display(snapshot.value as num).toString() + ' ' + widget._groupCurrency,
+                            overflow: TextOverflow.clip,
+                          )
+                      ),
                     ],
                   ),
                 );
               }
           ),
-        )
+        ),
       ],
     );
   }
@@ -156,6 +168,8 @@ class _ChartData {
 
   final String x;
   final dynamic y;
+  Color? goodCol = Colors.green;
+  Color? badCol = Colors.red;
 
   String getX() => x;
   dynamic getY() => y;

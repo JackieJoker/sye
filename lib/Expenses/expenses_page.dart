@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sye/Groups/edit_group_page.dart';
 import 'package:sye/Groups/group.dart';
+import 'package:sye/Groups/group_stats.dart';
 import '../balances_page.dart';
 import 'expenses_list.dart';
 import 'new_expense_page.dart';
@@ -113,7 +114,13 @@ class _ExpensesPageState extends State<ExpensesPage> {
                       )));
             },
             tooltip: "Add a new expense",
-            child: const Icon(Icons.add)) : null,
+            child: const Icon(Icons.add)) : SizedBox(
+              child: FloatingActionButton.extended(
+              onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => GroupStats(g: widget._group)));},
+              label: const Text('Group Stats'),
+              icon: const Icon(Icons.stacked_bar_chart),
+        ),
+            ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,

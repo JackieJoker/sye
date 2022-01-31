@@ -139,6 +139,10 @@ abstract class DB {
   }
 
   //static void setGroup(DatabaseReference x) { _groups = x; }
+  static void deleteExpense(String x, String k, Map m) {
+    DB.editBalance(m, x);
+    DB.getExpensesList(x)!.child(k).remove();
+  }
 
   static Future<void> deleteGroup(String x) async {
     String userId = await DeviceId.getDeviceDetails();
@@ -158,6 +162,23 @@ abstract class DB {
     String userId = await DeviceId.getDeviceDetails();
     DatabaseReference user = _users.child(userId + '/uid');
     user.set(firebaseId);
+  }
+
+  static Future<Map> getTotalGroupBalances(String groupId) async {
+    Map totalBalances = {};
+    DatabaseReference expenses = _groups.child(groupId).child('expenses');
+    DatabaseEvent expList = await expenses.once();
+    Map exp = expList.snapshot.value as Map;
+    if (expList.snapshot.exists) {
+      exp.forEach((key, value) {
+        if (totalBalances.containsKey(value['payer'])) {
+          totalBalances.update(value['payer'], (val) => val + value['amount']*1.00);
+        } else {
+          totalBalances.addAll({value['payer'] : value['amount']*1.00});
+        }
+      });
+    }
+    return totalBalances;
   }
 
   /*static Future<List> joinIdNameUser (String groupId, List ids) async {

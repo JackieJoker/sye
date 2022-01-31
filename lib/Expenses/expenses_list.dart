@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/database.dart';
 import 'package:sye/Classes/swipeable_item.dart';
@@ -24,37 +26,53 @@ class ExpensesList extends StatelessWidget {
       query: DB.getExpensesList(_groupId)!.orderByChild('order'),
       itemBuilder: (context, snapshot) {
         var expense = snapshot.value as Map;
-        return SwipeableItem(
-          item: ExpenseElement(
-            expense: Expense(
-              expenseId: snapshot.key!,
-              title: expense["title"],
-              emoji: '💙',
-              //payer: expense["payer"], // mi da problemi con il modo in cui tu inserisci il payer, ho optato per questa soluzione al momento
-              payer: _group.getUsers()![expense['payer']],
-              amount: expense["amount"],
-              convertedAmount: expense['converted_amount'],
-              date: expense["date"],
-              currency: expense['currency'],
-              //TODO
-              //type: expense['type'],
-              //category: expense['category'],
-              type: 'type',
-              //delete
-              category: 'category',
-              //delete
-              users: (expense['users'] as Map).values.toList(),
+        String payer = expense['payer'];
+        Map users = expense['users'] as Map;
+        Map remBal = {};
+        remBal.addAll({payer : (-expense['amount'] + expense['amount']/users.length)});
+        users.forEach((key, value) {
+          if (key != payer) {
+            remBal.addAll({key : expense['amount']/users.length});
+          }
+        });
+        return Padding(
+          padding: const EdgeInsets.all(7.0),
+          child: Card(
+            elevation: 10,
+            shadowColor: Colors.teal,
+            child: SwipeableItem(
+              item: ExpenseElement(
+                expense: Expense(
+                  expenseId: snapshot.key!,
+                  title: expense["title"],
+                  emoji: '💙',
+                  //payer: expense["payer"], // mi da problemi con il modo in cui tu inserisci il payer, ho optato per questa soluzione al momento
+                  payer: _group.getUsers()![expense['payer']],
+                  amount: expense["amount"],
+                  convertedAmount: expense['converted_amount'],
+                  date: expense["date"],
+                  currency: expense['currency'],
+                  //TODO
+                  //type: expense['type'],
+                  //category: expense['category'],
+                  type: 'type',
+                  //delete
+                  category: 'category',
+                  //delete
+                  users: (expense['users'] as Map).values.toList(),
+                ),
+                group: _group,
+                groupId: _groupId,
+              ),
+              onDelete: _delete(snapshot.key!, remBal),
             ),
-            group: _group,
-            groupId: _groupId,
           ),
-          onDelete: _delete(snapshot.key!),
         );
       },
     );
   }
 
-  Function _delete(String key) {
-    return () => DB.getExpensesList(_groupId)!.child(key).remove();
+  Function _delete(String key, Map m) {
+    return () => DB.deleteExpense(_groupId, key, m);
   }
 }

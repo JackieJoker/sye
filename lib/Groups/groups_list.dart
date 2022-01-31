@@ -121,7 +121,7 @@ class GroupsList extends StatelessWidget {
                   builder: (BuildContext context,
                       FirebaseQueryBuilderSnapshot userSnapshot, Widget? child) {
                     if (userSnapshot.isFetching) {
-                      return const CircularProgressIndicator();
+                      return const Center(child: CircularProgressIndicator());
                     }
                     if (userSnapshot.hasError) {
                       return Text('Error: ${userSnapshot.error}');
@@ -132,10 +132,16 @@ class GroupsList extends StatelessWidget {
                     for (int i = 0; i < data.length; i++) {
                       group.addAll({data[i].key!: data[i].value});
                     }
-                    print(group.toString());
-                    return SwipeableItem(
-                      item: GroupVisualizer(route: group, k: groupId, notifier: _notifier,),
-                      onDelete: _delete(groupId),
+                    return Padding(
+                      padding: const EdgeInsets.all(7.0),
+                      child: Card(
+                        elevation: 10,
+                        shadowColor: Colors.teal,
+                        child: SwipeableItem(
+                          item: GroupVisualizer(route: group, k: groupId, notifier: _notifier,),
+                          onDelete: _delete(groupId),
+                        ),
+                      ),
                     );
                   },
                 );
