@@ -251,8 +251,12 @@ class _GroupStatsState extends State<GroupStats> {
 
 List getUsers(Map m) {
   List list = [];
+  int i = 0;
   m.forEach((key, value) {
-    list.add(value);
+    if (key == 'u' + i.toString()) {
+      list.insert(i, value);
+      i++;
+    }
   });
   return list;
 }

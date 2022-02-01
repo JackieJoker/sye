@@ -36,9 +36,9 @@ class ExpenseElement extends StatelessWidget {
               flex: 2,
               child: Row(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(10),
-                    //child: Text(_expense.emoji),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(_expense.emoji, style: const TextStyle(fontSize: 18),),
                     // child: Icon(Icons.album_outlined, color:Colors.blue, size: 20),
                   ),
                   Flexible(

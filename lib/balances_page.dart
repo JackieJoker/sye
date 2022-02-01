@@ -54,8 +54,12 @@ class _BalancesPageState extends State<BalancesPage> {
               if (snap.hasData) {
                 Map balances = snap.data as Map;
                 Map<String, dynamic> result = {};
+                double max = 0.0;
                 userName?.forEach((key, value) {
                   result.addAll({value : balances[key]});
+                  if (balances[key] > max) {
+                    max = balances[key];
+                  }
                 });
                 //print(result.toString());
                 int i = 0;
@@ -75,9 +79,9 @@ class _BalancesPageState extends State<BalancesPage> {
                             )
                         ),
                         primaryYAxis: NumericAxis(
-                            minimum: -600,
-                            maximum: 600,
-                            interval: 300,
+                            minimum: -4*max.floorToDouble(),
+                            maximum: 4*max.floorToDouble(),
+                            interval: 2*max.roundToDouble(),
                             axisLine: const AxisLine(
                                 color: Colors.black,
                                 width: 3
@@ -121,12 +125,8 @@ class _BalancesPageState extends State<BalancesPage> {
             builder: (BuildContext ctxt, snap) {
               if (snap.hasData) {
                 Map balances = snap.data as Map;
-                List balList = [];
-                balances.forEach((key, value) {
-                  balList.add(value);
-                });
                 return ListView.builder(
-                  itemCount: balList.length,
+                  itemCount: balances.length,
                     itemBuilder: (BuildContext context, int i) {
                       return Card(
                         elevation: 5,
@@ -156,7 +156,7 @@ class _BalancesPageState extends State<BalancesPage> {
                                 fit: FlexFit.tight,
                                 flex: 1,
                                 child: Text(
-                                  display(balList[i] as num).toString() + ' ' + widget._groupCurrency,
+                                  display(balances['u' + i.toString()] as num).toString() + ' ' + widget._groupCurrency,
                                   overflow: TextOverflow.clip,
                                 )
                             ),

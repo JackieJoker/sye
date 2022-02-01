@@ -26,6 +26,21 @@ class ExpensesList extends StatelessWidget {
       query: DB.getExpensesList(_groupId)!.orderByChild('order'),
       itemBuilder: (context, snapshot) {
         var expense = snapshot.value as Map;
+        String emo = '';
+        switch (_group.getCategory()) {
+          case ('travel') : emo = '🌍';
+          break;
+          case ('sharedHouse') : emo = '🏠';
+          break;
+          case ('couple') : emo = '😍';
+          break;
+          case ('event') : emo = '🎤';
+          break;
+          case ('project') : emo = '🛠';
+          break;
+          case ('others') : emo = '👉';
+          break;
+        }
         return Padding(
           padding: const EdgeInsets.all(7.0),
           child: Card(
@@ -36,7 +51,7 @@ class ExpensesList extends StatelessWidget {
                 expense: Expense(
                   expenseId: snapshot.key!,
                   title: expense["title"],
-                  emoji: '💙',
+                  emoji: emo,
                   //payer: expense["payer"], // mi da problemi con il modo in cui tu inserisci il payer, ho optato per questa soluzione al momento
                   payer: _group.getUsers()![expense['payer']],
                   amount: expense["amount"],
