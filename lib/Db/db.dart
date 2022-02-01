@@ -84,23 +84,6 @@ abstract class DB {
   //   }
   // }
 
-  static Future<void> editBalance(Map balance, String x) async {
-    String userId = await DeviceId.getDeviceDetails();
-    DatabaseReference ref = FirebaseDatabase.instance.ref('groups/' + x + '/balances');
-    DatabaseEvent bal = await ref.once();
-    if (bal.snapshot.exists) {
-      Map trueBalance = bal.snapshot.value as Map;
-      trueBalance.forEach((key, value) {
-        if (balance.containsKey(key)) {
-          trueBalance.update(key, (value) => value + balance[key]);
-        } else {
-          trueBalance.update(key, (value) => value);
-        }
-      });
-      ref.set(trueBalance);
-    }
-  }
-
   static void addExpense(String groupId, Map expense){
     DatabaseReference expensesDB = _groups.child(groupId + '/expenses');
     DatabaseReference newExpenseDB = expensesDB.push();
@@ -131,14 +114,9 @@ abstract class DB {
   static DatabaseReference getGroup(String groupId) {
     return _groups.child(groupId);
   }
-  
-  static DatabaseReference getGroupBalances(String groupId) {
-    return _groups.child(groupId).child('balances');
-  }
 
   //static void setGroup(DatabaseReference x) { _groups = x; }
-  static void deleteExpense(String x, String k, Map m) {
-    DB.editBalance(m, x);
+  static void deleteExpense(String x, String k) {
     DB.getExpensesList(x)!.child(k).remove();
   }
 
@@ -147,11 +125,9 @@ abstract class DB {
     DatabaseReference ref = _userGroups.child(userId).child(x);
     await ref.remove();
   }
-  static Future<void> editGroup(String x, Map<String,Object?> m, Map<String,Object?> bal) async {
+  static Future<void> editGroup(String x, Map<String,Object?> m) async {
     DatabaseReference ref = _groups.child(x);
-    DatabaseReference balances = ref.child('balances');
     await ref.update(m);
-    await balances.update(bal);
   }
   //we need to perform a join fo each group to retrieve all the group data, e.g. expenses,name, partecipants etc..
 
@@ -177,6 +153,33 @@ abstract class DB {
       });
     }
     return totalBalances;
+  }
+
+  static Future<Map> getBalances(String groupId) async {
+    Map<String,double> balances = {};
+    DatabaseReference expenses = _groups.child(groupId).child('expenses');
+    DatabaseReference participants = _groups.child(groupId).child('participants');
+    DatabaseEvent expList = await expenses.once();
+    DatabaseEvent participantsData = await participants.once();
+    Map expMap = expList.snapshot.value as Map;
+    Map parMap = participantsData.snapshot.value as Map;
+    /// initialize the balances with all the participants of the group
+    parMap.forEach((key, value) {
+      balances.addAll({key : 0.0});
+    });
+    /// then for each expense we calculate the balances
+    expMap.forEach((key, value) {
+      /// download each expense from the db
+      Map expense = value as Map;
+      Map expenseUsers = expense['users'] as Map;
+      String payer = expense['payer'];
+      var amount = expense['amount'];
+      balances.update(payer, (value) => value + amount);
+      expenseUsers.forEach((key, value) {
+        balances.update(key, (val) => val - amount/expenseUsers.length);
+      });
+    });
+    return balances;
   }
 
   /*static Future<List> joinIdNameUser (String groupId, List ids) async {

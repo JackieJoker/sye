@@ -39,7 +39,6 @@ class _BalancesPageState extends State<BalancesPage> {
   Widget build(BuildContext context) {
     data = [];
     Map? userName = widget._group.getUsers();
-    log(widget._group.getUsers().toString());
 
     final display = createDisplay(
       length: 8,
@@ -49,20 +48,15 @@ class _BalancesPageState extends State<BalancesPage> {
       children: [
         Flexible(
           fit: FlexFit.tight,
-          child: FirebaseDatabaseQueryBuilder(
-              query: DB.getGroupBalances(widget._groupId),
-              builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) {
-                if (snapshot.isFetching) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                }
-                List<DataSnapshot> balances = snapshot.docs;
+          child: FutureBuilder(
+            future: DB.getBalances(widget._groupId),
+            builder: (BuildContext context, snap) {
+              if (snap.hasData) {
+                Map balances = snap.data as Map;
                 Map<String, dynamic> result = {};
-                for (int i = 0; i < balances.length; i++) {
-                  result.addAll({userName![balances[i].key!]: balances[i].value});
-                }
+                userName?.forEach((key, value) {
+                  result.addAll({value : balances[key]});
+                });
                 //print(result.toString());
                 int i = 0;
                 result.forEach((key, value) {
@@ -92,71 +86,90 @@ class _BalancesPageState extends State<BalancesPage> {
                         tooltipBehavior: _tooltip,
                         series: [
                           ColumnSeries(
-                              selectionBehavior: SelectionBehavior(
-                                  enable: true,
-                                  selectedColor: Colors.teal
-                              ),
-                              //borderRadius: BorderRadius.circular(10),
-                              dataSource: data,
-                              yValueMapper: (_ChartData data, _) => data.y,
-                              xValueMapper: (_ChartData data, _) => data.x,
-                              //color: (true) ? Colors.green : Colors.red,
-                              name: 'Balances',
-                              color: Color.fromRGBO(8, 142, 255, 1),
-                              pointColorMapper: (_ChartData data, _) => (data.y > 0) ? data.goodCol : data.badCol,
+                            selectionBehavior: SelectionBehavior(
+                                enable: true,
+                                selectedColor: Colors.teal
+                            ),
+                            //borderRadius: BorderRadius.circular(10),
+                            dataSource: data,
+                            yValueMapper: (_ChartData data, _) => data.y,
+                            xValueMapper: (_ChartData data, _) => data.x,
+                            //color: (true) ? Colors.green : Colors.red,
+                            name: 'Balances',
+                            color: Color.fromRGBO(8, 142, 255, 1),
+                            pointColorMapper: (_ChartData data, _) => (data.y > 0) ? data.goodCol : data.badCol,
                           ),
                         ]
                     ),
                   ),
                 );
-              }
-          ),
-        ),
-        Flexible(
-          fit: FlexFit.tight,
-          child: FirebaseDatabaseListView(
-              query: DB.getGroupBalances(widget._groupId),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              padding: const EdgeInsets.all(8),
-              itemBuilder: (context, snapshot) {
-                return Card(
-                  elevation: 5,
-                  shadowColor: Colors.deepPurpleAccent,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        fit: FlexFit.tight,
-                        flex: 3,
-                        child: ListTile(
-                          leading: const Icon(
-                            Icons.person,
-                            size: 45,
-                            color: Colors.deepPurpleAccent,
-                          ),
-                          title: Text(userName![snapshot.key],
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 25,
-                          ),
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                          fit: FlexFit.tight,
-                          flex: 1,
-                          child: Text(
-                              display(snapshot.value as num).toString() + ' ' + widget._groupCurrency,
-                            overflow: TextOverflow.clip,
-                          )
-                      ),
-                    ],
+              } else {
+                return const Center(
+                  child: AlertDialog(
+                    title: Text('Attention!'),
+                    content: Text('Insert a new expense to visualize balances of the group'),
                   ),
                 );
               }
-          ),
+            },
+          )
+        ),
+        Flexible(
+          fit: FlexFit.tight,
+          child: FutureBuilder(
+            future: DB.getBalances(widget._groupId),
+            builder: (BuildContext ctxt, snap) {
+              if (snap.hasData) {
+                Map balances = snap.data as Map;
+                List balList = [];
+                balances.forEach((key, value) {
+                  balList.add(value);
+                });
+                return ListView.builder(
+                  itemCount: balList.length,
+                    itemBuilder: (BuildContext context, int i) {
+                      return Card(
+                        elevation: 5,
+                        shadowColor: Colors.deepPurpleAccent,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              fit: FlexFit.tight,
+                              flex: 3,
+                              child: ListTile(
+                                leading: const Icon(
+                                  Icons.person,
+                                  size: 45,
+                                  color: Colors.deepPurpleAccent,
+                                ),
+                                title: Text(userName!['u' + i.toString()],
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 25,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                                fit: FlexFit.tight,
+                                flex: 1,
+                                child: Text(
+                                  display(balList[i] as num).toString() + ' ' + widget._groupCurrency,
+                                  overflow: TextOverflow.clip,
+                                )
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator(),);
+              }
+            },
+          )
         ),
       ],
     );

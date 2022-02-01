@@ -87,21 +87,9 @@ class ExpenseFormPage extends StatelessWidget {
       if (usersBool[i]!) selectedUsers[usersKeys[i]] = users[i];
     }
     Map? edited = Map.of(form.value);
-    Map? editedBalance = {};
     String payer = form.findControl('payer')!.value;
     double bal = double.parse(form.findControl('amount')!.value);
-    editedBalance[payer] = bal;
-    selectedUsers.forEach((key, value) {
-      if (key != payer) {
-        editedBalance[key] = 0;
-      }
-    });
-    editedBalance.forEach((user, value) {
-       editedBalance.update(user, (value) => value - bal/editedBalance.length);
-    });
-    log(editedBalance.toString());
-    DB.editBalance(editedBalance, _group.getId());
-    print(editedBalance.toString());
+
     DateTime date = edited['date'];
     edited.update('users', (value) => selectedUsers) as Map?;
     edited.update('date', (value) => DateFormat('yyyy/MM/dd').format(value));

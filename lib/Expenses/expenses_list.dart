@@ -26,15 +26,6 @@ class ExpensesList extends StatelessWidget {
       query: DB.getExpensesList(_groupId)!.orderByChild('order'),
       itemBuilder: (context, snapshot) {
         var expense = snapshot.value as Map;
-        String payer = expense['payer'];
-        Map users = expense['users'] as Map;
-        Map remBal = {};
-        remBal.addAll({payer : (-expense['amount'] + expense['amount']/users.length)});
-        users.forEach((key, value) {
-          if (key != payer) {
-            remBal.addAll({key : expense['amount']/users.length});
-          }
-        });
         return Padding(
           padding: const EdgeInsets.all(7.0),
           child: Card(
@@ -64,7 +55,7 @@ class ExpensesList extends StatelessWidget {
                 group: _group,
                 groupId: _groupId,
               ),
-              onDelete: _delete(snapshot.key!, remBal),
+              onDelete: _delete(snapshot.key!),
             ),
           ),
         );
@@ -72,7 +63,7 @@ class ExpensesList extends StatelessWidget {
     );
   }
 
-  Function _delete(String key, Map m) {
-    return () => DB.deleteExpense(_groupId, key, m);
+  Function _delete(String key) {
+    return () => DB.deleteExpense(_groupId, key);
   }
 }

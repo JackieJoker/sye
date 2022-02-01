@@ -31,8 +31,6 @@ class TabletLayout extends StatelessWidget {
               primarySwatch: Colors.blue,
             ),
             home: ExpensesPage(
-              groupId: _groupId,
-              groupCurrency: _groupCurrency,
               group: _group,
             ),
           ),

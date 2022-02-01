@@ -237,23 +237,9 @@ class _GroupStatsState extends State<GroupStats> {
                 )
             ),
             body: const Center(
-              child: Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Card(
-                  shadowColor: Colors.teal,
-                  elevation: 20,
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                        'Add new expenses to visualize Group Stats!',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  )
-                ),
+              child: AlertDialog(
+                title: Text('Attention!'),
+                content: Text('Insert a new expense to visualize balances of the group'),
               ),
             ),
           );

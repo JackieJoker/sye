@@ -273,10 +273,6 @@ class EditGroupPage extends StatelessWidget {
     if (valid) {
       _formKey.currentState!.save();
       Map<String, String> mapUsers = getUserList(l);
-      Map<String, Object?> balance = {};
-      mapUsers.forEach((key, value) {
-        balance[key] = 0;
-      });
 
       var keys = _formKey.currentState!.fields.keys;
       Map<String,dynamic> edited = {};
@@ -295,7 +291,7 @@ class EditGroupPage extends StatelessWidget {
       } else {
         edited.remove('description');
       }
-      DB.editGroup(_group.getId(), edited, balance);
+      DB.editGroup(_group.getId(), edited);
     } else {
       _formKey.currentState!.invalidateField(name: 'name');
       _formKey.currentState!.invalidateField(name: 'currency');

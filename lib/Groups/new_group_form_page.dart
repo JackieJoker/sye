@@ -76,31 +76,28 @@ class NewGroupFormPage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 4),
-                child: SizedBox(
-                  width: 500,
-                  child: FormBuilderTextField(
-                    name: 'currency',
-                    readOnly: true,
-                    decoration: const InputDecoration(
-                      labelText: "Currency",
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black54,
-                      ),
+                child: FormBuilderTextField(
+                  name: 'currency',
+                  readOnly: true,
+                  decoration: const InputDecoration(
+                    labelText: "Currency",
+                    suffixIcon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black54,
                     ),
-                    onTap: () {
-                      showCurrencyPicker(
-                        context: context,
-                        showFlag: true,
-                        showCurrencyName: true,
-                        showCurrencyCode: true,
-                        onSelect: (Currency currency) {
-                          _formKey.currentState?.fields['currency']?.didChange(currency.code);
-                        },
-                        favorite: ['USD','EUR'],
-                      );
-                    }, 
-                  )
+                  ),
+                  onTap: () {
+                    showCurrencyPicker(
+                      context: context,
+                      showFlag: true,
+                      showCurrencyName: true,
+                      showCurrencyCode: true,
+                      onSelect: (Currency currency) {
+                        _formKey.currentState?.fields['currency']?.didChange(currency.code);
+                      },
+                      favorite: ['USD','EUR'],
+                    );
+                  },
                 ),
               ),
               const Padding(
@@ -336,10 +333,6 @@ class NewGroupFormPage extends StatelessWidget {
     if (valid) {
       _formKey.currentState!.save();
       Map<String, String> mapUsers = getUserList(_formKey.currentState?.fields['participants']?.value);
-      Map balance = {};
-      mapUsers.forEach((key, value) {
-        balance[key] = 0;
-      });
 
       var keys = _formKey.currentState!.fields.keys;
       Map<String,dynamic> edited = {};
@@ -347,7 +340,6 @@ class NewGroupFormPage extends StatelessWidget {
       for (var element in keys) {
         edited[element] = "";
       }
-      edited.addAll({'balances' : balance});
       edited.update('name', (value) => _formKey.currentState!.fields['name']!.value);
       edited.update('currency', (value) => _formKey.currentState?.fields['currency']?.value);
       edited.update('category', (value) => _formKey.currentState?.fields['category']?.value);
