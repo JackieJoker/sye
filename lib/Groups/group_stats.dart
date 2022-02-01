@@ -27,7 +27,6 @@ class _GroupStatsState extends State<GroupStats> {
 
     Group g = widget._group;
     List uList = getUsers(g.getUsers()!);
-    log(uList.toString());
     return FutureBuilder(
       future: DB.getTotalGroupBalances(g.getId()),
       builder: (context, snap) {
@@ -262,29 +261,30 @@ class _GroupStatsState extends State<GroupStats> {
       },
     );
   }
-  List getUsers(Map m) {
-    List list = [];
-    m.forEach((key, value) {
-      list.add(value);
-    });
-    return list;
-  }
+}
 
-  double getTotal(List<ChartData> l) {
-    double tot = 0;
-    for (var element in l) {tot += element.y;}
-    return tot;
-  }
+List getUsers(Map m) {
+  List list = [];
+  m.forEach((key, value) {
+    list.add(value);
+  });
+  return list;
+}
 
-  String getBestPayer(List<ChartData> l) {
-    ChartData bestPayer = l[0];
-    for (int i = 1; i < l.length; i++) {
-      if (l[i].y > bestPayer.y) {
-        bestPayer = l[i];
-      }
+double getTotal(List<ChartData> l) {
+  double tot = 0;
+  for (var element in l) {tot += element.y;}
+  return tot;
+}
+
+String getBestPayer(List<ChartData> l) {
+  ChartData bestPayer = l[0];
+  for (int i = 1; i < l.length; i++) {
+    if (l[i].y > bestPayer.y) {
+      bestPayer = l[i];
     }
-    return bestPayer.x;
   }
+  return bestPayer.x;
 }
 
 class ChartData {

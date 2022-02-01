@@ -51,6 +51,9 @@ void main() {
 
     /// Enter the user Ale in the Text Field
     await tester.enterText(find.byKey(const Key('01')), 'Ale');
+    await tester.scrollUntilVisible(find.byKey(const Key('01')), 0);
+    await tester.tap(find.ancestor(of: find.text('Add'), matching: find.byType(GestureDetector)));
+
     /// Check if it shows up
     expect(find.byKey(const Key('02')), findsWidgets);
   });

@@ -17,6 +17,8 @@ void main() {
       category: 'category',
       users: {'u0' : 'user0', 'u1' : 'user1'}
   );
+  Map testMap = {'u0':'Marco', 'u6':'Giulio', 'u4':'Aldo'};
+  List testList = ['Marco', 'Giulio', 'Aldo'];
 
   testWidgets('Check the existence of the cancel button', (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -63,6 +65,7 @@ void main() {
 
     /// Enter the user Ale in the Text Field
     await tester.enterText(find.byKey(const Key('01')), 'Ale');
+    await tester.tap(find.ancestor(of: find.text('Add'), matching: find.byType(GestureDetector)));
     /// Check if it shows up
     expect(find.byKey(const Key('02')), findsWidgets);
   });
@@ -73,5 +76,24 @@ void main() {
     );
     ///I want to be sure that the add button is visualized
     expect(find.text('Delete this Group'), findsOneWidget);
+  });
+
+  test('Check the castUser function', () {
+    List list = castMapUsersToList(testMap);
+    int i = 0;
+    for (var element in list) {
+      expect(element, testMap['u' + i.toString()]);
+      i++;
+    }
+  });
+
+  test('Check the getUserList function', () {
+    Map map = getUserList(testList);
+    int i = 0;
+    map.forEach((key, value) {
+      expect(key, 'u' + i.toString());
+      expect(value, testList[i]);
+      i++;
+    });
   });
 }

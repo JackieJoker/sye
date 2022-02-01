@@ -1,8 +1,6 @@
 import 'dart:developer';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:sye/home_page.dart';
 
 import 'group.dart';
@@ -270,28 +268,7 @@ class EditGroupPage extends StatelessWidget {
     );
   }
 
-  List<dynamic> castMapUsersToList (Map<dynamic,dynamic> m) {
-    int i = 0;
-    List<dynamic> l = [];
-    while (m.containsKey('u' + i.toString())) {
-      l.add(m['u' + i.toString()]);
-      i += 1;
-    }
-    return l;
-  }
-
-  Map<String,String> getUserList(List<dynamic> uList) {
-    List<dynamic> users = uList;
-    Map<String, String> mapUsers = {};
-    for (int i = 0; i < users.length; i++) {
-      if (users[i]!.isNotEmpty) mapUsers['u'+i.toString()] = users[i]!.toString();
-    }
-    return mapUsers;
-  }
-
   void _onSubmit(List<dynamic> l) {
-
-
     var valid = _formKey.currentState!.validate();
     if (valid) {
       _formKey.currentState!.save();
@@ -332,4 +309,23 @@ class EditGroupPage extends StatelessWidget {
 
     //log(_formKey.currentState!.fields['title']!.value);
   }
+}
+
+List<dynamic> castMapUsersToList (Map<dynamic,dynamic> m) {
+  int i = 0;
+  List<dynamic> l = [];
+  while (m.containsKey('u' + i.toString())) {
+    l.add(m['u' + i.toString()]);
+    i += 1;
+  }
+  return l;
+}
+
+Map<String,String> getUserList(List<dynamic> uList) {
+  List<dynamic> users = uList;
+  Map<String, String> mapUsers = {};
+  for (int i = 0; i < users.length; i++) {
+    if (users[i]!.isNotEmpty) mapUsers['u'+i.toString()] = users[i]!.toString();
+  }
+  return mapUsers;
 }

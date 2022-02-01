@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sye/Classes/swipeable_item.dart';
-import 'package:sye/Expenses/expense.dart';
-import 'package:sye/Expenses/expense_detail_page.dart';
-import 'package:sye/Expenses/expense_element.dart';
-import 'package:sye/Expenses/expenses_list.dart';
-import 'package:sye/Expenses/expenses_page.dart';
-import 'package:sye/Expenses/new_expense_page.dart';
 import 'package:sye/Groups/group.dart';
 import 'package:sye/Groups/group_dialog.dart';
 import 'package:sye/Groups/group_page.dart';
 import 'package:sye/Groups/group_visualizer.dart';
-import 'package:sye/Groups/groups_list.dart';
-import 'package:sye/Groups/new_group_form_page.dart';
+
 
 void main() {
   Group group = const Group(
@@ -90,17 +82,17 @@ void main() {
           ),
         );
 
-        await tester.tap(find.byIcon(Icons.add));
+        await tester.tap(find.byType(FloatingActionButton));
         //await tester.pumpAndSettle();
 
         ///I want to be sure that the new page is visualized
-        expect(find.byType(SimpleDialog), findsOneWidget);
+        expect(find.descendant(of: find.byType(GroupPage), matching: find.byType(SimpleDialog)), findsOneWidget);
 
-        ///I want to be sure that the old page is not anymore visualized
-        expect(find.byType(GroupPage), findsNothing);
-      });
+        ///I want to be sure that the old page is still visible under the dialog
+        expect(find.byType(GroupPage), findsOneWidget);
+      });*/
 
-  testWidgets('GroupList is present', (WidgetTester tester) async {
+  /*testWidgets('GroupList is present', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: GroupPage(),
