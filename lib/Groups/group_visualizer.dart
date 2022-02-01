@@ -1,11 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:sye/Expenses/expenses_page.dart';
 import 'package:sye/Groups/group.dart';
 import 'package:sye/Groups/group_loader.dart';
 import 'package:sye/Tablet/group_widget.dart';
-import 'package:sye/Tablet/tablet_group_list_loader.dart';
 
 class GroupVisualizer extends StatelessWidget {
   final Map routeData;
@@ -35,7 +31,7 @@ class GroupVisualizer extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => GroupLoader(g: groupKey)));
         } else {
-          _notifier.value = GroupWidget(TabletGroupListLoader(g: groupKey), g);
+          _notifier.value = GroupWidget(GroupLoader(g: groupKey), g);
         }
       },
       child: Padding(

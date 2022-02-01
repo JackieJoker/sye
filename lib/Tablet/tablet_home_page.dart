@@ -65,10 +65,13 @@ class TabletHomePage extends StatelessWidget {
             flex: 1,
             child: GroupsList(notifier: _rightSide),
           ),
-          const VerticalDivider(width: 3, thickness: 3, color: Colors.blue),
+          const VerticalDivider(width: 3, thickness: 3, color: Colors.indigo),
           Flexible(
             flex: 2,
             child: MaterialApp(
+              theme: ThemeData(
+                primarySwatch: Colors.indigo,
+              ),
               home: FullScreen(
                 child: ValueListenableBuilder<GroupWidget?>(
                   valueListenable: _rightSide,

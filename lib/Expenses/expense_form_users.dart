@@ -1,13 +1,18 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterfire_ui/database.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:sye/Groups/group.dart';
 
 import '../Db/db.dart';
 
 class ExpenseUsersForm extends StatefulWidget {
-  final String _groupId;
+  final Group _group;
   final FormGroup form;
 
-  const ExpenseUsersForm({Key? key, required this.form, required groupId}) : _groupId = groupId, super(key: key);
+  const ExpenseUsersForm({Key? key, required this.form, required Group group})
+      : _group = group,
+        super(key: key);
 
   @override
   _ExpenseUsersFormState createState() => _ExpenseUsersFormState();
@@ -16,6 +21,9 @@ class ExpenseUsersForm extends StatefulWidget {
 class _ExpenseUsersFormState extends State<ExpenseUsersForm> {
   FormArray get usersList => widget.form.control('users') as FormArray;
 
+  List<String> get users =>
+      widget._group.getUsers()!.values.toList().cast<String>();
+
   @override
   void initState() {
     setUsers();
@@ -23,13 +31,9 @@ class _ExpenseUsersFormState extends State<ExpenseUsersForm> {
   }
 
   Future<void> setUsers() async {
-    if(DB.users.isEmpty) {
-      await DB.updateUsers(widget._groupId);
-    }
-    if(usersList.value!.isEmpty) {
-      usersList.addAll(
-          DB.users.map((e) => FormControl<bool>(value: true)).toList()
-      );
+    if (usersList.value!.isEmpty) {
+      usersList
+          .addAll(users.map((e) => FormControl<bool>(value: true)).toList());
     }
   }
 
@@ -39,17 +43,17 @@ class _ExpenseUsersFormState extends State<ExpenseUsersForm> {
       form: () => widget.form,
       builder: (context, form, child) {
         return ReactiveFormArray<bool>(
-          formArrayName: 'users',
-          builder: (context, formArray, child) => Column(
-              children: DB.users.map(_buildUsersListItem).toList()),
-        );
+            formArrayName: 'users',
+            builder: (context, formArray, child) {
+              return Column(children: users.map(_buildUsersListItem).toList());
+            });
       },
     );
   }
 
   Widget _buildUsersListItem(String user) {
     return ReactiveCheckboxListTile(
-      formControlName: DB.users.indexOf(user).toString(),
+      formControlName: users.indexOf(user).toString(),
       title: Text(user),
     );
   }

@@ -1,11 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sye/Db/firebase_options.dart';
 import 'package:sye/Expenses/expenses_page.dart';
 import 'package:sye/Groups/group.dart';
-import 'package:sye/balances_page.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 void main() async {
 
@@ -22,7 +18,7 @@ void main() async {
     await tester.pumpWidget(
       MaterialApp(
         home: ExpensesPage(
-            groupId: 'groupId', groupCurrency: group.getCurrency(), group: group),
+            group: group),
       ),
     );
 
@@ -34,7 +30,7 @@ void main() async {
     await tester.pumpWidget(
       MaterialApp(
         home: ExpensesPage(
-            groupId: 'groupId', groupCurrency: group.getCurrency(), group: group),
+            group: group),
       ),
     );
 

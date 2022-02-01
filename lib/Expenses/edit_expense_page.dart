@@ -39,7 +39,7 @@ class EditExpensePage extends StatelessWidget {
             return Text('Error: ${snapshot.error}');
           }
           _model.form.value = expenseForm(snapshot.docs);
-          return ExpenseFormPage(groupId: _groupId, groupCurrency: _group.getCurrency(), model: _model, onSubmit: _onSubmit);
+          return ExpenseFormPage(group: _group, model: _model, onSubmit: _onSubmit);
         });
   }
 

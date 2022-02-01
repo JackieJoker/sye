@@ -39,7 +39,7 @@ class GroupLoader extends StatelessWidget {
             category: result['category'],
             creator: result['creator'],
           );
-          return ExpensesPage(groupId: _groupId, groupCurrency: g.getCurrency(), group: g);
+          return ExpensesPage(group: g);
         }
     );
   }

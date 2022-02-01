@@ -7,18 +7,10 @@ import 'expenses_list.dart';
 import 'new_expense_page.dart';
 
 class ExpensesPage extends StatefulWidget {
-  final String _groupId;
-  final String _groupCurrency;
   final Group _group;
 
-  const ExpensesPage(
-      {required String groupId,
-        required String groupCurrency,
-        required Group group,
-        Key? key})
-      : _groupId = groupId,
-        _groupCurrency = groupCurrency,
-        _group = group,
+  const ExpensesPage({required Group group, Key? key})
+      : _group = group,
         super(key: key);
 
   @override
@@ -36,23 +28,23 @@ class _ExpensesPageState extends State<ExpensesPage> {
 
   Widget getBody() {
     if (_selectedIndex == 0) {
-      return ExpensesList(groupId: widget._groupId, group: widget._group);
+      return ExpensesList(groupId: widget._group.getId(), group: widget._group);
     } else {
-      return BalancesPage(widget._groupId, widget._groupCurrency, widget._group);
+      return BalancesPage(
+          widget._group.getId(), widget._group.getCurrency(), widget._group);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     List<dynamic>? uList;
-    if(widget._group.getUsers() == null) {
+    if (widget._group.getUsers() == null) {
       uList = null;
     } else {
       uList = castMapUsersToList(widget._group.getUsers()!);
-
     }
     return Scaffold(
-        appBar: AppBar(
+        appBar: MediaQuery.of(context).orientation == Orientation.landscape ? null : AppBar(
             automaticallyImplyLeading: false,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,59 +60,68 @@ class _ExpensesPageState extends State<ExpensesPage> {
                   children: [
                     GestureDetector(
                       child: Text(widget._group.getName()),
-                      onTap: () => Navigator.push(context,
+                      onTap: () => Navigator.push(
+                          context,
                           MaterialPageRoute(
-                              builder: (context) => EditGroupPage(group: widget._group))
-                      ),
+                              builder: (context) =>
+                                  EditGroupPage(group: widget._group))),
                     ),
-                    (uList == null) ? const SizedBox.shrink() :
-                    Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: Wrap(
-                        children: List.generate(uList.length, (index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 7),
-                            child: Text(
-                              uList![index],
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 13
-                              ),
+                    (uList == null)
+                        ? const SizedBox.shrink()
+                        : Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: Wrap(
+                              children: List.generate(uList.length, (index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 7),
+                                  child: Text(
+                                    uList![index],
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 13),
+                                  ),
+                                );
+                              }),
                             ),
-                          );
-                        }),
-                      ),
-                    )
+                          )
                   ],
                 ),
                 GestureDetector(
                     child: const Icon(Icons.menu),
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => EditGroupPage(group: widget._group)));
-                    }
-                )
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  EditGroupPage(group: widget._group)));
+                    })
               ],
-            )
-        ),
-        floatingActionButton: (_selectedIndex == 0) ? FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => NewExpensePage(
-                        groupId: widget._groupId,
-                        groupCurrency: widget._groupCurrency,
-                      )));
-            },
-            tooltip: "Add a new expense",
-            child: const Icon(Icons.add)) : SizedBox(
-              child: FloatingActionButton.extended(
-              onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => GroupStats(g: widget._group)));},
-              label: const Text('Group Stats'),
-              icon: const Icon(Icons.stacked_bar_chart),
-        ),
-            ),
+            )),
+        floatingActionButton: (_selectedIndex == 0)
+            ? FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NewExpensePage(
+                                group: widget._group,
+                              )));
+                },
+                tooltip: "Add a new expense",
+                child: const Icon(Icons.add))
+            : SizedBox(
+                child: FloatingActionButton.extended(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                GroupStats(g: widget._group)));
+                  },
+                  label: const Text('Group Stats'),
+                  icon: const Icon(Icons.stacked_bar_chart),
+                ),
+              ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,
@@ -136,11 +137,10 @@ class _ExpensesPageState extends State<ExpensesPage> {
             ),
           ],
         ),
-        body: getBody()
-    );
+        body: getBody());
   }
 
-  List<dynamic> castMapUsersToList (Map<dynamic,dynamic> m) {
+  List<dynamic> castMapUsersToList(Map<dynamic, dynamic> m) {
     int i = 0;
     List<dynamic> l = [];
     while (m.containsKey('u' + i.toString())) {

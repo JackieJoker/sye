@@ -82,6 +82,8 @@ class ExpenseDetail extends StatelessWidget {
             Column(
               children: _expense.users
                   .map((e) => Card(
+                elevation: 5,
+                shadowColor: Colors.deepPurpleAccent,
                         child: ListTile(
                           title: Text(
                             e.toString(),

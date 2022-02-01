@@ -4,19 +4,18 @@ import 'package:flutterfire_ui/database.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sye/Currency/currency_row.dart';
 import 'package:sye/Expenses/expense_form_users.dart';
+import 'package:sye/Groups/group.dart';
 import '../Db/db.dart';
 import 'expense_form_model.dart';
 import 'package:currency_picker/currency_picker.dart';
 
 class ExpenseForm extends StatelessWidget {
-  final String _groupId;
-  final String _groupCurrency;
+  final Group _group;
   final ExpenseFormModel _model;
 
   const ExpenseForm(
-      {required String groupId, required String groupCurrency, required ExpenseFormModel model, Key? key})
-      : _groupId = groupId,
-        _groupCurrency = groupCurrency,
+      {required Group group, required ExpenseFormModel model, Key? key})
+      : _group = group,
         _model = model,
         super(key: key);
 
@@ -36,6 +35,9 @@ class ExpenseForm extends StatelessWidget {
                 decoration: const InputDecoration(
                   labelText: 'Title',
                 ),
+                validationMessages: (control) => {
+                  ValidationMessage.required: 'The title cannot be empty',
+                },
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,6 +54,11 @@ class ExpenseForm extends StatelessWidget {
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))
                       ],
+                      validationMessages: (control) => {
+                        ValidationMessage.required:
+                            'The amount cannot be empty',
+                        ValidationMessage.pattern: 'The amount must be a decimal number'
+                      },
                     ),
                   ),
                   Padding(
@@ -77,7 +84,7 @@ class ExpenseForm extends StatelessWidget {
                               form.control('currency').value = currency.code;
                               _currency.value = currency.code;
                             },
-                            favorite: [_groupCurrency],
+                            favorite: [_group.getCurrency()],
                           );
                         },
                       ),
@@ -91,7 +98,12 @@ class ExpenseForm extends StatelessWidget {
                   return ReactiveValueListenableBuilder<String>(
                     formControlName: 'amount',
                     builder: (context, amount, child) {
-                      return CurrencyRow(currency: currency, amount: amount, form: form, groupCurrency: _groupCurrency,);
+                      return CurrencyRow(
+                        currency: currency,
+                        amount: amount,
+                        form: form,
+                        groupCurrency: _group.getCurrency(),
+                      );
                     },
                   );
                 },
@@ -113,33 +125,38 @@ class ExpenseForm extends StatelessWidget {
                 firstDate: DateTime(2010),
                 lastDate: DateTime(2030),
               ),
-              DB.getUsersList(_groupId) == null ?
-              const SizedBox.shrink()
-                  :
-              FirebaseDatabaseQueryBuilder(
-                query: DB.getUsersList(_groupId)!,
-                builder: (BuildContext context,
-                    FirebaseQueryBuilderSnapshot snapshot, Widget? child) {
-                  if (snapshot.isFetching) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
-                  return ReactiveDropdownField<String>(
-                      isExpanded: true,
-                      formControlName: 'payer',
-                      decoration: const InputDecoration(
-                        labelText: 'Payed by',
-                      ),
-                      items: snapshot.docs
-                          .map((element) => DropdownMenuItem<String>(
-                                child: Text(element.value.toString()),
-                                value: element.key.toString(),
-                              ))
-                          .toList());
-                },
-              ),
+              DB.getUsersList(_group.getId()) == null
+                  ? const SizedBox.shrink()
+                  : FirebaseDatabaseQueryBuilder(
+                      query: DB.getUsersList(_group.getId())!,
+                      builder: (BuildContext context,
+                          FirebaseQueryBuilderSnapshot snapshot,
+                          Widget? child) {
+                        if (snapshot.isFetching) {
+                          return const CircularProgressIndicator();
+                        }
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+                        return ReactiveDropdownField<String>(
+                          isExpanded: true,
+                          formControlName: 'payer',
+                          decoration: const InputDecoration(
+                            labelText: 'Payed by',
+                          ),
+                          items: snapshot.docs
+                              .map((element) => DropdownMenuItem<String>(
+                                    child: Text(element.value.toString()),
+                                    value: element.key.toString(),
+                                  ))
+                              .toList(),
+                          validationMessages: (control) => {
+                            ValidationMessage.required:
+                                'The payer cannot be empty',
+                          },
+                        );
+                      },
+                    ),
               const Padding(
                 padding: EdgeInsets.only(top: 20),
                 child: Text(
@@ -149,10 +166,7 @@ class ExpenseForm extends StatelessWidget {
                   ),
                 ),
               ),
-              ExpenseUsersForm(
-                form: form,
-                groupId: _groupId,
-              ),
+              ExpenseUsersForm(form: form, group: _group),
             ]),
           ),
         );

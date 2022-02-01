@@ -3,23 +3,21 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:sye/Db/db.dart';
 import 'package:intl/intl.dart';
+import 'package:sye/Groups/group.dart';
 import 'expense_form.dart';
 import 'expense_form_model.dart';
 
 class ExpenseFormPage extends StatelessWidget {
-  final String _groupId;
-  final String _groupCurrency;
+  final Group _group;
   final ExpenseFormModel _model;
   final Function _onSubmit;
 
   const ExpenseFormPage(
-      {required String groupId,
-      required String groupCurrency,
+      {required Group group,
       required Function onSubmit,
       required ExpenseFormModel model,
       Key? key})
-      : _groupId = groupId,
-        _groupCurrency = groupCurrency,
+      : _group = group,
         _onSubmit = onSubmit,
         _model = model,
         super(key: key);
@@ -64,9 +62,8 @@ class ExpenseFormPage extends StatelessWidget {
         ]),
       ),
       body: ExpenseForm(
-        groupId: _groupId,
+        group: _group,
         model: _model,
-        groupCurrency: _groupCurrency,
       ),
     );
   }
@@ -79,12 +76,15 @@ class ExpenseFormPage extends StatelessWidget {
   }
 
   Map _editForm(){
+    List<String> users = _group.getUsers()!.values.toList().cast<String>();
+    List<String> usersKeys = _group.getUsers()!.keys.toList().cast<String>();
+
     final form = _model.form;
     List<bool?> usersBool = form.findControl('users')!.value as List<bool?>;
     Map<String, String> selectedUsers = {};
 
     for (int i = 0; i < usersBool.length; i++) {
-      if (usersBool[i]!) selectedUsers[DB.userKeys[i]] = DB.users[i];
+      if (usersBool[i]!) selectedUsers[usersKeys[i]] = users[i];
     }
     Map? edited = Map.of(form.value);
     Map? editedBalance = {};
@@ -100,7 +100,7 @@ class ExpenseFormPage extends StatelessWidget {
        editedBalance.update(user, (value) => value - bal/editedBalance.length);
     });
     log(editedBalance.toString());
-    DB.editBalance(editedBalance, _groupId);
+    DB.editBalance(editedBalance, _group.getId());
     print(editedBalance.toString());
     DateTime date = edited['date'];
     edited.update('users', (value) => selectedUsers) as Map?;

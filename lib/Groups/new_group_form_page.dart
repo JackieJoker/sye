@@ -163,12 +163,15 @@ class NewGroupFormPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Container(
-                  child: const Text(
-                    'Your Informations',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white70,
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Text(
+                      'Your Informations',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white70,
+                      ),
                     ),
                   ),
                   alignment: Alignment.centerLeft,
@@ -196,12 +199,15 @@ class NewGroupFormPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Container(
-                          child: Text(
-                            'Who Participates? ('+ usersList.length.toString() + '/50)',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white70
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Text(
+                              'Who Participates? ('+ usersList.length.toString() + '/50)',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white70
+                              ),
                             ),
                           ),
                           alignment: Alignment.centerLeft,

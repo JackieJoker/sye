@@ -11,8 +11,8 @@ abstract class DB {
   static final DatabaseReference _groupUsers = FirebaseDatabase.instance.ref("groups_users");
   static final DatabaseReference _userGroups = FirebaseDatabase.instance.ref("users_groups");
 
-  static List<String> users = [];
-  static List<String> userKeys = [];
+  // static List<String> users = [];
+  // static List<String> userKeys = [];
 
   static downloadGroup() {}
   static Future<bool?> checkUser() async {
@@ -66,23 +66,23 @@ abstract class DB {
     return _groups.child(groupId + "/expenses/" + expenseId);
   }
 
-  static Future<void> updateUsers(String groupId) async {
-    //This line is to make unit and widget testing without calling Firebase
-    if(!Platform.environment.containsKey('FLUTTER_TEST')) {
-      DatabaseEvent event =
-      await
-      _groups
-          .child(groupId + '/participants')
-          .once();
-      Map<dynamic, dynamic>? dbMap = event.snapshot.value as Map<
-          dynamic,
-          dynamic>?;
-      List<String>? usersList = dbMap!.values.cast<String>().toList();
-      users = usersList;
-      List<String>? keysList = dbMap.keys.cast<String>().toList();
-      userKeys = keysList;
-    }
-  }
+  // static Future<void> updateUsers(String groupId) async {
+  //   //This line is to make unit and widget testing without calling Firebase
+  //   if(!Platform.environment.containsKey('FLUTTER_TEST')) {
+  //     DatabaseEvent event =
+  //     await
+  //     _groups
+  //         .child(groupId + '/participants')
+  //         .once();
+  //     Map<dynamic, dynamic>? dbMap = event.snapshot.value as Map<
+  //         dynamic,
+  //         dynamic>?;
+  //     List<String>? usersList = dbMap!.values.cast<String>().toList();
+  //     users = usersList;
+  //     List<String>? keysList = dbMap.keys.cast<String>().toList();
+  //     userKeys = keysList;
+  //   }
+  // }
 
   static Future<void> editBalance(Map balance, String x) async {
     String userId = await DeviceId.getDeviceDetails();
@@ -124,9 +124,7 @@ abstract class DB {
   }
 
   static Future<void> editExpense(String groupId, String expenseId, Map expense) async {
-    String userId = await DeviceId.getDeviceDetails();
-    DatabaseReference groups = FirebaseDatabase.instance.ref(userId + '/groups');
-    DatabaseReference expensesDB = groups.child(groupId + "/expenses/" + expenseId);
+    DatabaseReference expensesDB = _groups.child(groupId + "/expenses/" + expenseId);
     expensesDB.set(expense);
   }
 

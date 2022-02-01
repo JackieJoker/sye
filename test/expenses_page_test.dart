@@ -10,7 +10,7 @@ import 'package:sye/Groups/group.dart';
 
 void main() {
   Group group = const Group(
-      id: 'id', name: 'name', description: 'description', currency: 'EUR');
+      id: 'id', name: 'name', description: 'description', currency: 'EUR', users: {'u0': 'Danilo', 'u1': 'Alessandro'});
   Expense expense = const Expense(
       expenseId: 'expenseId',
       title: 'title',
@@ -27,7 +27,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: ExpensesPage(
-            groupId: 'groupId', groupCurrency: 'EUR', group: group),
+            group: group),
       ),
     );
 
@@ -40,7 +40,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: ExpensesPage(
-            groupId: 'groupId', groupCurrency: 'EUR', group: group),
+            group: group),
       ),
     );
 
@@ -58,7 +58,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: ExpensesPage(
-            groupId: 'groupId', groupCurrency: 'EUR', group: group),
+           group: group),
       ),
     );
 
@@ -98,11 +98,17 @@ void main() {
     expect(find.byType(ExpenseElement), findsNothing);
   });
 
+  final TestWidgetsFlutterBinding binding = TestWidgetsFlutterBinding
+      .ensureInitialized() as TestWidgetsFlutterBinding;
+
   testWidgets('Group name is present', (WidgetTester tester) async {
+    binding.window.physicalSizeTestValue = Size(800, 1600);
+    binding.window.devicePixelRatioTestValue = 1.0;
+
     await tester.pumpWidget(
       MaterialApp(
-        home: ExpensesPage(
-            groupId: 'groupId', groupCurrency: 'EUR', group: group),
+          home: Scaffold(
+              body: ExpensesPage(group: group))
       ),
     );
 
