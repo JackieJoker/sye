@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
@@ -43,71 +42,69 @@ class Login extends StatelessWidget {
             Container(
 
             ),
-            Container(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      child: Container(
-                        decoration: BoxDecoration(
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        shape: BoxShape.rectangle,
+                        border: Border.all(),
+                        boxShadow: const []
+                      ),
+                      width: 300,
+                      height: 50,
+                      child: const Center(child: Text('Login with Apple')),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    child: Container(
+                      decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
                           shape: BoxShape.rectangle,
                           border: Border.all(),
-                          boxShadow: []
-                        ),
-                        width: 300,
-                        height: 50,
-                        child: Center(child: Text('Login with Apple')),
+                          boxShadow: const []
                       ),
+                      width: 300,
+                      height: 50,
+                      child: const Center(child: Text('Login with Facebook')),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            shape: BoxShape.rectangle,
-                            border: Border.all(),
-                            boxShadow: []
-                        ),
-                        width: 300,
-                        height: 50,
-                        child: Center(child: Text('Login with Facebook')),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          shape: BoxShape.rectangle,
+                          border: Border.all(),
+                          boxShadow: const []
                       ),
+                      width: 300,
+                      height: 50,
+                      child: const Center(child: Text('Login with Google')),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            shape: BoxShape.rectangle,
-                            border: Border.all(),
-                            boxShadow: []
-                        ),
-                        width: 300,
-                        height: 50,
-                        child: Center(child: Text('Login with Google')),
-                      ),
-                    ),
-                  ),
-                  FormBuilder(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          FormBuilderTextField(name: 'name'),
-                          FormBuilderTextField(name: 'email')
-                        ],      
-                      )
-                  )
-                ],
-              ),
+                ),
+                FormBuilder(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        FormBuilderTextField(name: 'name'),
+                        FormBuilderTextField(name: 'email')
+                      ],
+                    )
+                )
+              ],
             )
           ],
         ),

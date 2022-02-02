@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:currency_picker/currency_picker.dart';
@@ -190,6 +189,7 @@ class NewGroupFormPage extends StatelessWidget {
               ),
               FormBuilderField(
                 name: "participants",
+                validator: FormBuilderValidators.compose([FormBuilderValidators.minLength(context, 1), FormBuilderValidators.maxLength(context, 50)]),
                 builder: (FormFieldState<dynamic> field) {
                   return Column(
                     children: <Widget>[
@@ -362,9 +362,8 @@ class NewGroupFormPage extends StatelessWidget {
       _formKey.currentState!.invalidateField(name: 'name');
       _formKey.currentState!.invalidateField(name: 'currency');
       _formKey.currentState!.invalidateField(name: 'category', errorText: 'Choose a given category');
-      _formKey.currentState!.invalidateField(name: 'participants');
-      log('Not validated');
-    }//log(_formKey.currentState!.fields['title']!.value);
+      _formKey.currentState!.invalidateField(name: 'participants', errorText: 'Insert at least one participant');
+    }
   }
 
   Map<String,String> getUserList(List<dynamic> uList) {

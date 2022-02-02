@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:sye/Groups/user_label.dart';
 
 class AddUserForm extends StatefulWidget {
   final FormGroup _form;
@@ -102,7 +99,6 @@ class _AddUserFormState extends State<AddUserForm> {
                       child: TextField(
                         onChanged: (text) {
                           tempUser = text;
-                          log(tempUser!);
                         },
                         controller: eCtrl,
                         onSubmitted: (text) {

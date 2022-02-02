@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,6 @@ class SelectUserPage extends StatelessWidget {
           for (int i = 0; i < data.length; i++) {
             result.add(data[i].value as String);
           }
-          print(result);
           return Scaffold(
               appBar: AppBar(
                 title: const Text('Select a user'),

@@ -1,8 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/database.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sye/Db/db.dart';
 import 'package:sye/Expenses/expenses_page.dart';
 
@@ -33,7 +31,7 @@ class GroupLoader extends StatelessWidget {
             id: _groupId,
             name: result["name"],
             currency: result["currency"],
-            description: result["description"],
+            description: (result["description"] != null) ? result["description"] : '',
             users: result["participants"],
             expenses: result['expenses'],
             category: result['category'],

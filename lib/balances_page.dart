@@ -1,9 +1,5 @@
-import 'dart:developer';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutterfire_ui/database.dart';
 import 'package:sye/Db/db.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -61,7 +57,6 @@ class _BalancesPageState extends State<BalancesPage> {
                     max = balances[key];
                   }
                 });
-                //print(result.toString());
                 int i = 0;
                 result.forEach((key, value) {
                   data.add(_ChartData(key, value));
@@ -100,7 +95,7 @@ class _BalancesPageState extends State<BalancesPage> {
                             xValueMapper: (_ChartData data, _) => data.x,
                             //color: (true) ? Colors.green : Colors.red,
                             name: 'Balances',
-                            color: Color.fromRGBO(8, 142, 255, 1),
+                            color: const Color.fromRGBO(8, 142, 255, 1),
                             pointColorMapper: (_ChartData data, _) => (data.y > 0) ? data.goodCol : data.badCol,
                           ),
                         ]
@@ -155,9 +150,12 @@ class _BalancesPageState extends State<BalancesPage> {
                             Flexible(
                                 fit: FlexFit.tight,
                                 flex: 1,
-                                child: Text(
-                                  display(balances['u' + i.toString()] as num).toString() + ' ' + widget._groupCurrency,
-                                  overflow: TextOverflow.clip,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    display(balances['u' + i.toString()] as num).toString() + ' ' + widget._groupCurrency,
+                                    overflow: TextOverflow.clip,
+                                  ),
                                 )
                             ),
                           ],

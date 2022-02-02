@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:sye/Db/db.dart';
@@ -132,6 +131,7 @@ class _GroupStatsState extends State<GroupStats> {
                       elevation: 15,
                       shadowColor: Colors.teal,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Flexible(
                             fit: FlexFit.tight,
@@ -148,7 +148,12 @@ class _GroupStatsState extends State<GroupStats> {
                           Flexible(
                             fit: FlexFit.tight,
                               flex: 1,
-                              child: Text(display(getTotal(data)).toString() + ' ' + widget._group.getCurrency()))
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(display(getTotal(data)).toString() + ' ' + widget._group.getCurrency(),
+                                  style: const TextStyle(fontSize: 15,),
+                                ),
+                              ))
                         ],
                       )
                     ),
@@ -159,6 +164,7 @@ class _GroupStatsState extends State<GroupStats> {
                         elevation: 15,
                         shadowColor: Colors.teal,
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Flexible(
                               fit: FlexFit.tight,
@@ -174,7 +180,10 @@ class _GroupStatsState extends State<GroupStats> {
                               ),
                             ),
                             Flexible(
-                                child: Text(getBestPayer(data))
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(getBestPayer(data), style: const TextStyle(fontSize: 15),),
+                                )
                                 )
                           ],
                         )

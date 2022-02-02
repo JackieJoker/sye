@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:sye/Groups/group_dialog.dart';
 import 'package:sye/Groups/groups_list.dart';
 import '../auth_gate.dart';
-import '../profile_page.dart';
 import '../Db/db.dart';
 
 class GroupPage extends StatelessWidget {
@@ -39,7 +36,6 @@ class GroupPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             bool? condition = snapshot.data as bool;
-            log(condition.toString());
             if (condition) {
               return const GroupsList();
             } else {

@@ -17,7 +17,7 @@ class GroupVisualizer extends StatelessWidget {
         id: groupKey,
         name: routeData["name"],
         currency: routeData["currency"],
-        description: routeData["description"],
+        description: (routeData["description"] != null) ? routeData["description"] : '',
         users: routeData["participants"],
         expenses: routeData['expenses'],
         category: routeData['category'],

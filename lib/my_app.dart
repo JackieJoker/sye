@@ -1,22 +1,14 @@
-import 'dart:developer';
-
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/i10n.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
-import 'package:sye/auth_gate.dart';
-import 'package:sye/join_utenti_gruppi.dart';
 import 'home_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'Groups/group_page.dart';
-import 'get_device_id.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _storeUser();
     return MaterialApp(
       localizationsDelegates: const [
         FormBuilderLocalizations.delegate,
@@ -39,21 +31,24 @@ class MyApp extends StatelessWidget {
       title: 'Split Your Expenses',
       theme: ThemeData(
         primarySwatch: Colors.indigo,
+        brightness: Brightness.light,
       ),
+      darkTheme: ThemeData(
+        primarySwatch: Colors.purple,
+        brightness: Brightness.dark,
+        /* dark theme settings */
+      ),
+      themeMode: ThemeMode.light,
+      /* ThemeMode.system to follow system theme,
+         ThemeMode.light for light theme,
+         ThemeMode.dark for dark theme
+      */
+      debugShowCheckedModeBanner: false,
       home: const HomePage(),
     );
   }
 
-  _storeUser() async{
-    final prefs = await SharedPreferences.getInstance();
-    try {
-      var id = await DeviceId.getDeviceDetails();
-      prefs.setString('deviceId', id);
-      //log(prefs.getString('deviceId')!);
-    } on Exception catch (e) {
-      // TODO
-    }
-  }
+
 }
 
 //TODO: login page, then handle the logged user

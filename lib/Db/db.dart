@@ -1,5 +1,3 @@
-import 'dart:developer';
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -8,13 +6,10 @@ import 'package:sye/get_device_id.dart';
 abstract class DB {
   static final DatabaseReference _groups = FirebaseDatabase.instance.ref("groups");
   static final DatabaseReference _users = FirebaseDatabase.instance.ref("users");
-  static final DatabaseReference _groupUsers = FirebaseDatabase.instance.ref("groups_users");
   static final DatabaseReference _userGroups = FirebaseDatabase.instance.ref("users_groups");
 
-  // static List<String> users = [];
-  // static List<String> userKeys = [];
 
-  static downloadGroup() {}
+
   static Future<bool?> checkUser() async {
     String x = await DeviceId.getDeviceDetails();
     DatabaseReference check = _users.child(x);
@@ -129,7 +124,6 @@ abstract class DB {
     DatabaseReference ref = _groups.child(x);
     await ref.update(m);
   }
-  //we need to perform a join fo each group to retrieve all the group data, e.g. expenses,name, partecipants etc..
 
   /// Register a user if not present in DB
   static Future<void> registerUser(String firebaseId) async {

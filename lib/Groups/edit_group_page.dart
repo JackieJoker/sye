@@ -297,7 +297,6 @@ class EditGroupPage extends StatelessWidget {
       _formKey.currentState!.invalidateField(name: 'currency');
       _formKey.currentState!.invalidateField(name: 'category', errorText: 'Choose a given category');
       _formKey.currentState!.invalidateField(name: 'participants');
-      print('Not validated');
     }
 
     //TODO: updating also the balances of new users

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/database.dart';
 import 'package:sye/Classes/swipeable_item.dart';
