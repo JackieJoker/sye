@@ -15,7 +15,12 @@ This application was built for the "Design and Implementation of Mobile Applicat
 * Install Flutter  
 https://docs.flutter.dev/get-started/install
 
-* Run the flutter application  
+* Create a Firebase account
+
+* Add Firebase to the Flutter application
+https://firebase.google.com/docs/flutter/setup?platform=ios
+
+* Run the Flutter application  
 You can press the run button on your favorite IDE  
 OR  
 Type the following command in the terminal
