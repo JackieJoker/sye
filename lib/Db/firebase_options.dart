@@ -38,7 +38,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCbNXSe8O7nkHjEI9fXvxSsuRl-4fTgBRA',
+    apiKey: <insert here you api key>,
     appId: '1:807269076699:web:f670f6493cee8444ab46fe',
     messagingSenderId: '807269076699',
     projectId: 'split-your-expenses',
@@ -49,7 +49,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDE285b4e7uOu8UppG_rQO4owKtewxnFDo',
+    apiKey: <insert here you api key>,
     appId: '1:807269076699:android:19c8e25c33ae5c71ab46fe',
     messagingSenderId: '807269076699',
     projectId: 'split-your-expenses',
@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCLSpjqmVMEYwbU9AMtc44OPlDT2jgGF2w',
+    apiKey: <insert here you api key>,
     appId: '1:807269076699:ios:03d88a8c3f1d7850ab46fe',
     messagingSenderId: '807269076699',
     projectId: 'split-your-expenses',
