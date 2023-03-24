@@ -1,6 +1,7 @@
 # Split Your Expenses
 
 This is a multiplatform application to automatically split the expenses between friends. The application is developed using the Flutter framework and can run both on iOS and Android devices. It supports smartphones and tablets with different layouts.  
+
 **Add the expense and choose which of your friends will share it.**
 
 The idea of this application comes from the possibility to have a facility that would help us in the common life of university roommates that have to split some of the expenses for the house they share. For Instance, you have to go to the supermarket to buy some products for house cleaning and you want to divide the expense’s amount with some of your housemates, but suddenly you realize that one of them lend you some money the day before, in this case we are in front of a give-have cycle that could be difficult to manage. 
